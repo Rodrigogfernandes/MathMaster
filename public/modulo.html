@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Álgebra: Equações de Primeiro Grau</title>
+    <style>
+        :root {
+            --primary: #4a6fa5;
+            --secondary: #6290c8;
+            --accent: #ffcd38;
+            --text: #333333;
+            --light-bg: #f5f7fa;
+            --white: #ffffff;
+            --success: #4caf50;
+            --error: #f44336;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            background-color: var(--accent);
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .user-stats {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .coins {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .module-container {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .module-sidebar {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .module-title {
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        .module-desc {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .progress-container {
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--light-bg);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 35%;
+            background-color: var(--accent);
+        }
+
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .topics-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .topic-item {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-item:hover {
+            background-color: var(--accent);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .topic-item.active {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .topic-number {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .topic-item.active .topic-number {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .topic-info {
+            flex: 1;
+        }
+
+        .topic-status {
+            font-size: 20px;
+        }
+
+        .completed {
+            color: var(--accent);
+        }
+
+        .module-content {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .content-header {
+            margin-bottom: 30px;
+        }
+
+        .content-title {
+            color: var(--primary);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .content-description {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .theory-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .theory-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .theory-card {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .formula {
+            font-size: 24px;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+
+        .example-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .example {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .example-content {
+            margin-bottom: 15px;
+        }
+
+        .solution-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .step {
+            display: flex;
+            gap: 10px;
+        }
+
+        .step-number {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .exercises-section {
+            margin-top: 40px;
+        }
+
+        .exercise {
+            background-color: var(--light-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px;
+            background-color: var(--white);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+        }
+
+        .option-letter {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--light-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .option.wrong {
+            border-color: var(--error);
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .option.correct .option-letter,
+        .option.selected.correct .option-letter {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .option.wrong .option-letter,
+        .option.selected.wrong .option-letter {
+            background-color: var(--error);
+            color: var(--white);
+        }
+
+        .option.selected .option-letter {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: var(--success);
+            display: block;
+        }
+
+        .feedback.wrong {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: var(--error);
+            display: block;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .reward-animation {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            color: var(--white);
+            z-index: 100;
+            display: none;
+        }
+
+        .reward-icon {
+            font-size: 60px;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .module-container {
+                grid-template-columns: 1fr;
+            }
+
+            .example-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <span>MathMaster</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="dashboard.html" class="active">Módulos</a></li>
+                    <li><a href="conquistas.html">Conquistas</a></li>
+                    <li><a href="comunidade.html">Comunidade</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-stats">
+                    <div class="coins">
+                        <span>🪙</span>
+                        <span id="userCoins">350</span>
+                    </div>
+                </div>
+                <div class="avatar" onclick="openProfileMenu()">A</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="module-container">
+            <div class="module-sidebar">
+                <h2 class="module-title">Álgebra Básica</h2>
+                <p class="module-desc">Domine os fundamentos da álgebra e resolva equações com confiança.</p>
+
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="moduleProgress"></div>
+                    </div>
+                    <div class="progress-text">
+                        <span>Progresso: 35%</span>
+                        <span>7/20 aulas</span>
+                    </div>
+                </div>
+
+                <div class="topics-list">
+                    <div class="topic-item completed" onclick="changeTopic(1)">
+                        <div class="topic-number">1</div>
+                        <div class="topic-info">Introdução à Álgebra</div>
+                        <div class="topic-status">✓</div>
+                    </div>
+                    <div class="topic-item completed" onclick="changeTopic(2)">
+                        <div class="topic-number">2</div>
+                        <div class="topic-info">Operações Básicas</div>
+                        <div class="topic-status">✓</div>
+                    </div>
+                    <div class="topic-item active" onclick="changeTopic(3)">
+                        <div class="topic-number">3</div>
+                        <div class="topic-info">Equações de 1º Grau</div>
+                        <div class="topic-status"></div>
+                    </div>
+                    <div class="topic-item" onclick="changeTopic(4)">
+                        <div class="topic-number">4</div>
+                        <div class="topic-info">Equações de 2º Grau</div>
+                        <div class="topic-status"></div>
+                    </div>
+                    <div class="topic-item" onclick="changeTopic(5)">
+                        <div class="topic-number">5</div>
+                        <div class="topic-info">Sistemas Lineares</div>
+                        <div class="topic-status"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module-content">
+                <div class="content-header">
+                    <h1 class="content-title">Equações de Primeiro Grau</h1>
+                    <p class="content-description">Aprenda a resolver equações lineares com uma variável e entenda suas aplicações no dia a dia.</p>
+                </div>
+
+                <div class="theory-section">
+                    <h2 class="section-title">
+                        <div class="section-icon">📚</div>
+                        <span>Teoria</span>
+                    </h2>
+
+                    <div class="theory-content">
+                        <div class="theory-card">
+                            <p>Uma <strong>equação de primeiro grau</strong> (ou equação linear) com uma variável tem a forma:</p>
+                            
+                            <div class="formula">ax + b = c</div>
+                            
+                            <p>Onde:</p>
+                            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                                <li><strong>a</strong> é o coeficiente da variável (a ≠ 0)</li>
+                                <li><strong>x</strong> é a variável</li>
+                                <li><strong>b</strong> e <strong>c</strong> são constantes</li>
+                            </ul>
+                            
+                            <p>Para resolver uma equação de primeiro grau, nosso objetivo é isolar a variável (x) em um lado da equação.</p>
+                        </div>
+
+                        <div class="theory-card">
+                            <p><strong>Princípios para resolver equações:</strong></p>
+                            <ul style="margin-left: 20px; margin-bottom: 15px;">
+                                <li>O que fazemos em um lado da equação, devemos fazer no outro lado também</li>
+                                <li>Podemos somar ou subtrair o mesmo valor de ambos os lados</li>
+                                <li>Podemos multiplicar ou dividir ambos os lados pelo mesmo valor (exceto zero)</li>
+                            </ul>
+                            
+                            <p><strong>Estratégia geral:</strong></p>
+                            <ol style="margin-left: 20px;">
+                                <li>Mover todos os termos com a variável para um lado</li>
+                                <li>Mover todos os termos constantes para o outro lado</li>
+                                <li>Simplificar cada lado</li>
+                                <li>Dividir ambos os lados pelo coeficiente da variável</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="examples-section">
+                    <h2 class="section-title">
+                        <div class="section-icon">💡</div>
+                        <span>Exemplos</span>
+                    </h2>
+
+                    <div class="example-container">
+                        <div class="example">
+                            <h3 class="example-title">Exemplo 1</h3>
+                            <div class="example-content">
+                                <p>Resolver: 2x + 5 = 13</p>
+                            </div>
+                            <div class="solution-steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div>Subtrair 5 de ambos os lados: 2x + 5 - 5 = 13 - 5</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div>Simplificar: 2x = 8</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div>Dividir ambos os lados por 2: x = 4</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div>Verificar: 2(4) + 5 = 8 + 5 = 13 ✓</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example">
+                            <h3 class="example-title">Exemplo 2</h3>
+                            <div class="example-content">
+                                <p>Resolver: 3x - 7 = 2x + 5</p>
+                            </div>
+                            <div class="solution-steps">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div>Subtrair 2x de ambos os lados: 3x - 2x - 7 = 2x - 2x + 5</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div>Simplificar: x - 7 = 5</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div>Somar 7 aos dois lados: x - 7 + 7 = 5 + 7</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div>Simplificar: x = 12</div>
+                                </div>
+                                <div class="step">
+                                    <div class="step-number">5</div>
+                                    <div>Verificar: 3(12) - 7 = 36 - 7 = 29 e 2(12) + 5 = 24 + 5 = 29 ✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exercises-section">
+                    <h2 class="section-title">
+                        <div class="section-icon">✏️</div>
+                        <span>Exercícios</span>
+                    </h2>
+
+                    <div class="exercise">
+                        <h3 class="exercise-question">1. Qual é o valor de x na equação: 4x - 3 = 9?</h3>
+                        <div class="options-list">
+                            <div class="option" onclick="selectOption(this, 1, 'A')">
+                                <div class="option-letter">A</div>
+                                <div>x = 2</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 1, 'B')">
+                                <div class="option-letter">B</div>
+                                <div>x = 3</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 1, 'C')">
+                                <div class="option-letter">C</div>
+                                <div>x = 4</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 1, 'D')">
+                                <div class="option-letter">D</div>
+                                <div>x = 6</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback-1"></div>
+                    </div>
+
+                    <div class="exercise">
+                        <h3 class="exercise-question">2. Resolva a equação: 2(x + 3) = 14</h3>
+                        <div class="options-list">
+                            <div class="option" onclick="selectOption(this, 2, 'A')">
+                                <div class="option-letter">A</div>
+                                <div>x = 3</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 2, 'B')">
+                                <div class="option-letter">B</div>
+                                <div>x = 4</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 2, 'C')">
+                                <div class="option-letter">C</div>
+                                <div>x = 5</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 2, 'D')">
+                                <div class="option-letter">D</div>
+                                <div>x = 7</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback-2"></div>
+                    </div>
+
+                    <div class="exercise">
+                        <h3 class="exercise-question">3. Se 5x - 2 = 3x + 6, então x é igual a:</h3>
+                        <div class="options-list">
+                            <div class="option" onclick="selectOption(this, 3, 'A')">
+                                <div class="option-letter">A</div>
+                                <div>x = 2</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 3, 'B')">
+                                <div class="option-letter">B</div>
+                                <div>x = 3</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 3, 'C')">
+                                <div class="option-letter">C</div>
+                                <div>x = 4</div>
+                            </div>
+                            <div class="option" onclick="selectOption(this, 3, 'D')">
+                                <div class="option-letter">D</div>
+                                <div>x = 5</div>
+                            </div>
+                        </div>
+                        <div class="feedback" id="feedback-3"></div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="goToModule()">Voltar para Módulos</button>
+                        <button class="btn btn-primary" onclick="checkAllAnswers()">Verificar Respostas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reward-animation" id="rewardAnimation">
+        <div class="reward-icon">🎉</div>
+        <h2>Parabéns!</h2>
+        <p>Você ganhou <span id="rewardCoins">50</span> moedas!</p>
+    </div>
+
+    <script>
+        // Respostas corretas para cada exercício
+        const correctAnswers = {
+            1: 'C', // x = 4,    a = 3
+            2: 'B', // x = 4
+            3: 'D'  // x = 5,    a = 4
+        };
+
+        // Armazenar respostas do usuário
+        const userAnswers = {};
+        let answersChecked = false;
+
+        function selectOption(option, questionNumber, selectedOption) {
+            // Se as respostas já foram verificadas, não permitir novas seleções
+            if (answersChecked) return;
+
+            // Remover seleção anterior
+            const options = option.parentElement.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            // Selecionar a opção clicada
+            option.classList.add('selected');
+            
+            // Armazenar resposta do usuário
+            userAnswers[questionNumber] = selectedOption;
+        }
+
+        function checkAllAnswers() {
+            if (answersChecked) return;
+            
+            let correctCount = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Verificar cada resposta
+            for (let questionNumber in correctAnswers) {
+                const userAnswer = userAnswers[questionNumber];
+                const isCorrect = userAnswer === correctAnswers[questionNumber];
+                
+                // Mostrar feedback
+                const feedbackElement = document.getElementById(`feedback-${questionNumber}`);
+                
+                if (!userAnswer) {
+                    feedbackElement.textContent = "Você não respondeu esta questão.";
+                    feedbackElement.className = "feedback wrong";
+                    continue;
+                }
+                
+                if (isCorrect) {
+                    feedbackElement.textContent = "Correto! Excelente trabalho!";
+                    feedbackElement.className = "feedback correct";
+                    correctCount++;
+                } else {
+                    feedbackElement.textContent = `Incorreto. A resposta correta é ${correctAnswers[questionNumber]}.`;
+                    feedbackElement.className = "feedback wrong";
+                }
+                
+                // Destacar as opções corretas e incorretas
+                const options = document.querySelectorAll(`.exercise:nth-child(${questionNumber}) .option`);
+                options.forEach(option => {
+                    const optionLetter = option.querySelector('.option-letter').textContent;
+                    
+                    if (optionLetter === correctAnswers[questionNumber]) {
+                        option.classList.add('correct');
+                    } else if (optionLetter === userAnswer && userAnswer !== correctAnswers[questionNumber]) {
+                        option.classList.add('wrong');
+                    }
+                });
+            }
+            
+            // Marcar como verificado
+            answersChecked = true;
+            
+            // Se o usuário acertou alguma questão, dar recompensa
+            if (correctCount > 0) {
+                const rewardPoints = correctCount * 15; // 15 moedas por questão correta
+                document.getElementById('rewardCoins').textContent = rewardPoints;
+                showReward();
+                
+                // Atualizar moedas do usuário
+                const currentCoins = parseInt(document.getElementById('userCoins').textContent);
+                document.getElementById('userCoins').textContent = currentCoins + rewardPoints;
+                
+                // Atualizar progresso do módulo
+                updateModuleProgress();
+            }
+        }
+
+        function showReward() {
+            const rewardAnimation = document.getElementById('rewardAnimation');
+            rewardAnimation.style.display = 'block';
+            
+            // Esconder após 3 segundos
+            setTimeout(() => {
+                rewardAnimation.style.display = 'none';
+            }, 3000);
+        }
+
+        function updateModuleProgress() {
+            // Simular atualização de progresso
+            const progressBar = document.getElementById('moduleProgress');
+            const currentProgress = 35;
+            const newProgress = 40; // Aumentar progresso em 5%
+            
+            progressBar.style.width = `${newProgress}%`;
+            document.querySelector('.progress-text span:first-child').textContent = `Progresso: ${newProgress}%`;
+            
+            // Animar a transição
+            progressBar.style.transition = 'width 1s ease';
+        }
+
+        function changeTopic(topicNumber) {
+            alert(`Navegando para o tópico ${topicNumber}`);
+            // Aqui você implementaria a navegação real para o tópico selecionado
+        }
+
+        function goToModule() {
+            window.location.href = 'dashboard.html';
+        }
+
+        function openProfileMenu() {
+            // Simular abertura de menu de perfil
+            const hasLoginPage = true; // Definir como true se a página de login existir
+            
+            if (hasLoginPage) {
+                // Redirecionar para a página de login
+                window.location.href = 'login.html';
+            } else {
+                alert('Menu de perfil (em desenvolvimento)');
+            }
+        }
+        
+        // Função para criar o botão de alternância de tema
+        function createThemeToggle() {
+            const themeToggle = document.createElement('div');
+            themeToggle.className = 'theme-toggle';
+            themeToggle.innerHTML = '🌓';
+            themeToggle.style.position = 'fixed';
+            themeToggle.style.bottom = '20px';
+            themeToggle.style.left = '20px';
+            themeToggle.style.backgroundColor = 'var(--primary)';
+            themeToggle.style.color = 'var(--white)';
+            themeToggle.style.width = '40px';
+            themeToggle.style.height = '40px';
+            themeToggle.style.borderRadius = '50%';
+            themeToggle.style.display = 'flex';
+            themeToggle.style.alignItems = 'center';
+            themeToggle.style.justifyContent = 'center';
+            themeToggle.style.cursor = 'pointer';
+            themeToggle.style.boxShadow = 'var(--shadow)';
+            themeToggle.style.zIndex = '50';
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            document.body.appendChild(themeToggle);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                document.documentElement.style.setProperty('--light-bg', '#1f2937');
+                document.documentElement.style.setProperty('--white', '#374151');
+                document.documentElement.style.setProperty('--text', '#e5e7eb');
+                document.documentElement.style.setProperty('--primary', '#60a5fa');
+            } else {
+                document.documentElement.style.setProperty('--light-bg', '#f5f7fa');
+                document.documentElement.style.setProperty('--white', '#ffffff');
+                document.documentElement.style.setProperty('--text', '#333333');
+                document.documentElement.style.setProperty('--primary', '#4a6fa5');
+            }
+        }
+        
+        // Criar o botão de alternância de tema quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            createThemeToggle();
+        });
+    </script>
+
+  <script src="api.js"></script>
+  <script src="components/notifications.js"></script>
+  <script>
+   // Verificar autenticação
+   document.addEventListener('DOMContentLoaded', function() {
+      // Verificar se há um token no localStorage
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Fazer requisição para verificar o token
+        fetch('/api/auth/me', {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Usuário autenticado, atualizar UI
+            updateUserInterface(data.data);
+            
+            // Inicializar o sistema de notificações
+            if (window.NotificationSystem) {
+              window.NotificationSystem.init();
+            }
+          } else {
+            // Token inválido, redirecionar para login em páginas protegidas
+            if (false) { // A página index não requer login
+              window.location.href = '/login.html?redirect=modulo.html';
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao verificar autenticação:', error);
+          // Redirecionar para login em caso de erro (para páginas protegidas)
+          if (false) { // A página index não requer login
+            window.location.href = '/login.html?redirect=modulo.html';
+          }
+        });
+      } else {
+        // Sem token, redirecionar para login em páginas protegidas
+        if (false) { // A página index não requer login
+          window.location.href = '/login.html?redirect=modulo.html';
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html> 

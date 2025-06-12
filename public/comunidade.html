@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Comunidade</title>
+    <link rel="stylesheet" href="css/comunidade.css">
+   
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <span>MathMaster</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="dashboard.html">Módulos</a></li>
+                    <li><a href="conquistas.html">Conquistas</a></li>
+                    <li><a href="comunidade.html" class="active">Comunidade</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-stats">
+                    <div class="coins">
+                        <span>🪙</span>
+                        <span>350</span>
+                    </div>
+                </div>
+                <div class="avatar" onclick="openProfileMenu()">A</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="community-container">
+            <div class="main-content">
+                <div class="page-title">
+                    <div class="page-title-icon">👥</div>
+                    <h1>Comunidade MathMaster</h1>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab(this, 'discussions')">Discussões</div>
+                    <div class="tab" onclick="switchTab(this, 'questions')">Perguntas</div>
+                    <div class="tab" onclick="switchTab(this, 'challenges')">Desafios</div>
+                </div>
+
+                <div class="posts-container">
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author-avatar">M</div>
+                            <div class="post-info">
+                                <div class="post-author">Maria Silva</div>
+                                <div class="post-meta">
+                                    <span>Há 2 horas</span>
+                                    <span>Álgebra</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Alguém pode me ajudar a entender melhor a fatoração de polinômios? Estou tendo dificuldades especialmente com casos em que há múltiplas variáveis.</p>
+                            <div class="post-topics">
+                                <span class="post-topic">Álgebra</span>
+                                <span class="post-topic">Polinômios</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <span>👍</span>
+                                <span>12</span>
+                            </div>
+                            <div class="post-action">
+                                <span>💬</span>
+                                <span>8 respostas</span>
+                            </div>
+                            <div class="post-action">
+                                <span>🔖</span>
+                                <span>Salvar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author-avatar">J</div>
+                            <div class="post-info">
+                                <div class="post-author">João Costa</div>
+                                <div class="post-meta">
+                                    <span>Ontem</span>
+                                    <span>Cálculo</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>Compartilhando um método que me ajudou muito a memorizar as principais regras de derivação. Achei esse método visual super eficaz!</p>
+                            <p>Basicamente, eu crio cartões mentais associando cada regra com uma imagem...</p>
+                            <div class="post-topics">
+                                <span class="post-topic">Cálculo</span>
+                                <span class="post-topic">Derivadas</span>
+                                <span class="post-topic">Dicas de Estudo</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <span>👍</span>
+                                <span>24</span>
+                            </div>
+                            <div class="post-action">
+                                <span>💬</span>
+                                <span>5 respostas</span>
+                            </div>
+                            <div class="post-action">
+                                <span>🔖</span>
+                                <span>Salvar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author-avatar">P</div>
+                            <div class="post-info">
+                                <div class="post-author">Prof. Carlos</div>
+                                <div class="post-meta">
+                                    <span>Há 3 dias</span>
+                                    <span>Geometria</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-content">
+                            <p>DESAFIO DA SEMANA: Provar que a soma dos ângulos internos de um triângulo é sempre 180°, usando apenas os axiomas de Euclides. Quem consegue?</p>
+                            <div class="post-topics">
+                                <span class="post-topic">Geometria</span>
+                                <span class="post-topic">Desafio</span>
+                            </div>
+                        </div>
+                        <div class="post-actions">
+                            <div class="post-action">
+                                <span>👍</span>
+                                <span>45</span>
+                            </div>
+                            <div class="post-action">
+                                <span>💬</span>
+                                <span>17 respostas</span>
+                            </div>
+                            <div class="post-action">
+                                <span>🔖</span>
+                                <span>Salvar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="new-post-form">
+                    <div class="new-post-header">
+                        <h3 class="form-title">Criar Nova Publicação</h3>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" placeholder="O que você gostaria de compartilhar ou perguntar?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Adicionar tópicos (separados por vírgula)">
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn" onclick="createNewPost()">Publicar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-widget">
+                    <h3>Tópicos em Alta</h3>
+                    <div class="trending-topics-list">
+                        <div class="topic-item">
+                            <div class="topic-icon">∫</div>
+                            <div class="topic-info">
+                                <div>Integrais</div>
+                                <div>42 discussões</div>
+                            </div>
+                        </div>
+                        <div class="topic-item">
+                            <div class="topic-icon">π</div>
+                            <div class="topic-info">
+                                <div>Trigonometria</div>
+                                <div>36 discussões</div>
+                            </div>
+                        </div>
+                        <div class="topic-item">
+                            <div class="topic-icon">𝜎</div>
+                            <div class="topic-info">
+                                <div>Estatística</div>
+                                <div>28 discussões</div>
+                            </div>
+                        </div>
+                        <div class="topic-item">
+                            <div class="topic-icon">x²</div>
+                            <div class="topic-info">
+                                <div>Equações Quadráticas</div>
+                                <div>23 discussões</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Usuários Ativos</h3>
+                    <div class="active-users-list">
+                        <div class="user-item">
+                            <div class="user-avatar">M</div>
+                            <div class="user-info">
+                                <div class="user-name">Maria Silva</div>
+                                <div class="user-level">Nível 28 • Especialista em Álgebra</div>
+                            </div>
+                        </div>
+                        <div class="user-item">
+                            <div class="user-avatar">P</div>
+                            <div class="user-info">
+                                <div class="user-name">Prof. Carlos</div>
+                                <div class="user-level">Nível 45 • Mentor</div>
+                            </div>
+                        </div>
+                        <div class="user-item">
+                            <div class="user-avatar">J</div>
+                            <div class="user-info">
+                                <div class="user-name">João Costa</div>
+                                <div class="user-level">Nível 32 • Especialista em Cálculo</div>
+                            </div>
+                        </div>
+                        <div class="user-item">
+                            <div class="user-avatar">L</div>
+                            <div class="user-info">
+                                <div class="user-name">Luiza Mendes</div>
+                                <div class="user-level">Nível 26 • Especialista em Geometria</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3>Eventos da Comunidade</h3>
+                    <div class="community-events">
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="event-day">15</div>
+                                <div class="event-month">MAI</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-title">Olimpíada de Matemática</div>
+                                <div class="event-description">Competição online com prêmios para os vencedores</div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="event-day">22</div>
+                                <div class="event-month">MAI</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-title">Webinar: Matemática na Prática</div>
+                                <div class="event-description">Aplicações da matemática no dia a dia</div>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-date">
+                                <div class="event-day">03</div>
+                                <div class="event-month">JUN</div>
+                            </div>
+                            <div class="event-info">
+                                <div class="event-title">Grupo de Estudos: Cálculo III</div>
+                                <div class="event-description">Encontro semanal para estudar juntos</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login Rápido -->
+    <div class="quick-login-modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Login Rápido</h2>
+                <span class="close-modal" onclick="closeLoginModal()">×</span>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Seu email">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" placeholder="Sua senha">
+            </div>
+            <div class="form-actions">
+                <button class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="quickLogin()">Entrar</button>
+            </div>
+            <p style="margin-top: 15px; text-align: center;">
+                <a href="login.html" style="color: var(--primary); text-decoration: none;">
+                    Ir para página de login completa
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(element, tabName) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Add active class to clicked tab
+            element.classList.add('active');
+            
+            // Here you would typically load content based on the selected tab
+            // For demonstration, just log the tab change
+            console.log(`Switched to ${tabName} tab`);
+        }
+        
+        function createNewPost() {
+            const textarea = document.querySelector('.new-post-form textarea');
+            const topicsInput = document.querySelector('.new-post-form input');
+            
+            if (textarea.value.trim() === '') {
+                alert('Por favor, escreva algo para publicar.');
+                return;
+            }
+            
+            const content = textarea.value;
+            const topics = topicsInput.value ? topicsInput.value.split(',').map(topic => topic.trim()) : [];
+            
+            console.log('Nova publicação:', { content, topics });
+            
+            // Aqui você adicionaria o código para enviar a publicação para o servidor
+            // E atualizar a interface para mostrar a nova publicação
+            
+            // Limpar os campos após publicar
+            textarea.value = '';
+            topicsInput.value = '';
+            
+            // Feedback para o usuário
+            alert('Publicação criada com sucesso!');
+        }
+        
+        
+
+        // Adiciona funcionalidade aos botões de ação das postagens
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButtons = document.querySelectorAll('.post-action:first-child');
+            
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const countElement = this.querySelector('span:last-child');
+                    let count = parseInt(countElement.textContent);
+                    
+                    // Toggle like
+                    if (this.classList.contains('liked')) {
+                        count--;
+                        this.classList.remove('liked');
+                    } else {
+                        count++;
+                        this.classList.add('liked');
+                    }
+                    
+                    countElement.textContent = count;
+                });
+            });
+        });
+        
+        // Tema escuro
+        function createThemeToggle() {
+            const themeToggle = document.createElement('div');
+            themeToggle.className = 'theme-toggle';
+            themeToggle.innerHTML = '🌓';
+            themeToggle.style.position = 'fixed';
+            themeToggle.style.bottom = '20px';
+            themeToggle.style.left = '20px';
+            themeToggle.style.backgroundColor = 'var(--primary)';
+            themeToggle.style.color = 'var(--white)';
+            themeToggle.style.width = '40px';
+            themeToggle.style.height = '40px';
+            themeToggle.style.borderRadius = '50%';
+            themeToggle.style.display = 'flex';
+            themeToggle.style.alignItems = 'center';
+            themeToggle.style.justifyContent = 'center';
+            themeToggle.style.cursor = 'pointer';
+            themeToggle.style.boxShadow = 'var(--shadow)';
+            themeToggle.style.zIndex = '50';
+            
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            document.body.appendChild(themeToggle);
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            
+            if (document.body.classList.contains('dark-theme')) {
+                document.documentElement.style.setProperty('--light-bg', '#1f2937');
+                document.documentElement.style.setProperty('--white', '#374151');
+                document.documentElement.style.setProperty('--text', '#e5e7eb');
+                document.documentElement.style.setProperty('--primary', '#60a5fa');
+            } else {
+                document.documentElement.style.setProperty('--light-bg', '#f5f7fa');
+                document.documentElement.style.setProperty('--white', '#ffffff');
+                document.documentElement.style.setProperty('--text', '#333333');
+                document.documentElement.style.setProperty('--primary', '#4a6fa5');
+            }
+        }
+        
+        // Criar o botão de alternância de tema quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            createThemeToggle();
+        });
+
+        // Inicialização do script quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Inicializar dados do usuário
+                const userData = await MathMasterAPI.User.getUserData();
+                const userStats = await MathMasterAPI.User.getUserStats();
+                const topics = await MathMasterAPI.Topics.getUserTopics();
+                const posts = await MathMasterAPI.Community.getPosts();
+                const trendingTopics = await MathMasterAPI.Community.getTrendingTopics();
+                
+                // Atualizar interface com dados reais
+                updateUserInterface(userData);
+                updateUserStats(userStats);
+                renderTopics(topics);
+                renderPosts(posts);
+                renderTrendingTopics(trendingTopics);
+                
+                // Configurar eventos de interação
+                setupInteractions();
+                
+                // Atualizar dados periodicamente
+                setInterval(async () => {
+                    const newPosts = await MathMasterAPI.Community.getPosts();
+                    const newTrendingTopics = await MathMasterAPI.Community.getTrendingTopics();
+                    renderPosts(newPosts);
+                    renderTrendingTopics(newTrendingTopics);
+                }, 60000); // Atualizar a cada minuto
+                
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                // Tratar erro apropriadamente
+            }
+        });
+
+        // Função para configurar interações
+        function setupInteractions() {
+            // Configurar formulário de nova postagem
+            const postForm = document.querySelector('#new-post-form');
+            if (postForm) {
+                postForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(postForm);
+                    const postData = {
+                        content: formData.get('content'),
+                        topic: formData.get('topic')
+                    };
+                    
+                    try {
+                        await MathMasterAPI.Community.createPost(postData);
+                        postForm.reset();
+                        
+                        // Atualizar lista de posts
+                        const newPosts = await MathMasterAPI.Community.getPosts();
+                        renderPosts(newPosts);
+                        
+                        showNotification('Post criado com sucesso!', 'success');
+                    } catch (error) {
+                        console.error('Erro ao criar post:', error);
+                        showNotification('Erro ao criar post. Tente novamente.', 'error');
+                    }
+                });
+            }
+            
+            // Configurar botões de filtro
+            document.querySelectorAll('.filter-btn').forEach(button => {
+                button.addEventListener('click', async () => {
+                    const filter = button.dataset.filter;
+                    try {
+                        const filteredPosts = await MathMasterAPI.Community.getFilteredPosts(filter);
+                        renderPosts(filteredPosts);
+                    } catch (error) {
+                        console.error('Erro ao filtrar posts:', error);
+                    }
+                });
+            });
+            
+            // Configurar pesquisa
+            const searchInput = document.querySelector('#search-input');
+            if (searchInput) {
+                let searchTimeout;
+                searchInput.addEventListener('input', (e) => {
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(async () => {
+                        const searchTerm = e.target.value.trim();
+                        if (searchTerm) {
+                            try {
+                                const searchResults = await MathMasterAPI.Community.searchPosts(searchTerm);
+                                renderPosts(searchResults);
+                            } catch (error) {
+                                console.error('Erro na pesquisa:', error);
+                            }
+                        } else {
+                            // Se a pesquisa estiver vazia, mostrar todos os posts
+                            const allPosts = await MathMasterAPI.Community.getPosts();
+                            renderPosts(allPosts);
+                        }
+                    }, 300);
+                });
+            }
+        }
+
+        // Função para renderizar tópicos
+        function renderTopics(topics) {
+            const topicsContainer = document.querySelector('.topics-container');
+            if (!topicsContainer) return;
+            
+            const html = topics.map(topic => `
+                <div class="topic-card ${topic.isActive ? 'active' : ''}" data-topic-id="${topic.id}">
+                    <div class="topic-icon">${topic.icon}</div>
+                    <div class="topic-info">
+                        <h3>${topic.name}</h3>
+                        <div class="topic-progress">
+                            <div class="progress-bar" style="width: ${topic.progress}%"></div>
+                            <span>${topic.progress}%</span>
+                        </div>
+                    </div>
+                    <div class="topic-stats">
+                        <span>${topic.posts} posts</span>
+                        <span>${topic.members} membros</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            topicsContainer.innerHTML = html;
+            
+            // Adicionar eventos de clique nos tópicos
+            document.querySelectorAll('.topic-card').forEach(card => {
+                card.addEventListener('click', async () => {
+                    const topicId = card.dataset.topicId;
+                    try {
+                        const topicPosts = await MathMasterAPI.Community.getTopicPosts(topicId);
+                        renderPosts(topicPosts);
+                    } catch (error) {
+                        console.error('Erro ao carregar posts do tópico:', error);
+                    }
+                });
+            });
+        }
+
+        // Função para renderizar posts
+        function renderPosts(posts) {
+            const postsContainer = document.querySelector('.posts-container');
+            if (!postsContainer) return;
+            
+            const html = posts.map(post => `
+                <div class="post-card" data-post-id="${post.id}">
+                    <div class="post-header">
+                        <div class="user-info">
+                            <div class="user-avatar">${post.author.avatar}</div>
+                            <div>
+                                <h4>${post.author.name}</h4>
+                                <span class="post-time">${formatTimeAgo(post.createdAt)}</span>
+                            </div>
+                        </div>
+                        <div class="post-topic">${post.topic}</div>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-footer">
+                        <button class="like-btn ${post.liked ? 'active' : ''}" onclick="handleLike('${post.id}')">
+                            <i class="fas fa-heart"></i>
+                            <span>${post.likes}</span>
+                        </button>
+                        <button class="comment-btn" onclick="handleComment('${post.id}')">
+                            <i class="fas fa-comment"></i>
+                            <span>${post.comments.length}</span>
+                        </button>
+                        <button class="share-btn" onclick="handleShare('${post.id}')">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                    ${post.comments.length > 0 ? `
+                        <div class="comments-section">
+                            ${post.comments.map(comment => `
+                                <div class="comment">
+                                    <div class="comment-avatar">${comment.author.avatar}</div>
+                                    <div class="comment-content">
+                                        <h5>${comment.author.name}</h5>
+                                        <p>${comment.content}</p>
+                                        <span class="comment-time">${formatTimeAgo(comment.createdAt)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+            
+            postsContainer.innerHTML = html;
+        }
+
+        // Função para renderizar tópicos em tendência
+        function renderTrendingTopics(topics) {
+            const trendingContainer = document.querySelector('.trending-topics');
+            if (!trendingContainer) return;
+            
+            const html = topics.map(topic => `
+                <div class="trending-topic" onclick="filterByTopic('${topic.id}')">
+                    <div class="topic-rank">#${topic.rank}</div>
+                    <div class="topic-details">
+                        <h4>${topic.name}</h4>
+                        <span>${topic.posts} posts hoje</span>
+                    </div>
+                    <div class="topic-trend ${topic.trend > 0 ? 'up' : 'down'}">
+                        <i class="fas fa-arrow-${topic.trend > 0 ? 'up' : 'down'}"></i>
+                        <span>${Math.abs(topic.trend)}%</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            trendingContainer.innerHTML = html;
+        }
+
+        // Função para formatar tempo relativo
+        function formatTimeAgo(date) {
+            const now = new Date();
+            const past = new Date(date);
+            const diff = Math.floor((now - past) / 1000);
+            
+            if (diff < 60) return 'agora mesmo';
+            if (diff < 3600) return `${Math.floor(diff / 60)} min atrás`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)} h atrás`;
+            if (diff < 2592000) return `${Math.floor(diff / 86400)} dias atrás`;
+            return past.toLocaleDateString();
+        }
+
+        // Funções de interação com posts
+        async function handleLike(postId) {
+            try {
+                const response = await MathMasterAPI.Community.likePost(postId);
+                if (response.success) {
+                    const posts = await MathMasterAPI.Community.getPosts();
+                    renderPosts(posts);
+                }
+            } catch (error) {
+                console.error('Erro ao curtir post:', error);
+            }
+        }
+
+        async function handleComment(postId) {
+            const comment = prompt('Digite seu comentário:');
+            if (comment) {
+                try {
+                    await MathMasterAPI.Community.commentPost(postId, comment);
+                    const posts = await MathMasterAPI.Community.getPosts();
+                    renderPosts(posts);
+                } catch (error) {
+                    console.error('Erro ao comentar:', error);
+                }
+            }
+        }
+
+        function handleShare(postId) {
+            // Implementar compartilhamento
+            alert('Funcionalidade de compartilhamento em desenvolvimento');
+        }
+
+        async function filterByTopic(topicId) {
+            try {
+                const topicPosts = await MathMasterAPI.Community.getTopicPosts(topicId);
+                renderPosts(topicPosts);
+            } catch (error) {
+                console.error('Erro ao filtrar por tópico:', error);
+            }
+        }
+
+        // Função para mostrar notificações
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Função para fazer logout
+        async function logout() {
+            try {
+                await MathMasterAPI.User.logout();
+                localStorage.removeItem('token');
+                localStorage.removeItem('userName');
+                window.location.href = '/login.html';
+            } catch (error) {
+                console.error('Erro ao fazer logout:', error);
+            }
+        }
+    </script>
+
+  <script src="api.js"></script>
+  <script src="components/notifications.js"></script>
+  <script>
+    // Verificar autenticação
+    document.addEventListener('DOMContentLoaded', function() {
+      // Verificar se há um token no localStorage
+      const token = localStorage.getItem('token');
+      if (token) {
+        // Em um ambiente real, faríamos uma requisição para validar o token
+        // Para fins de demonstração, vamos simular uma autenticação bem-sucedida
+        try {
+          // Simular resposta positiva de autenticação
+          const userData = {
+            name: localStorage.getItem('userName') || 'Usuário',
+            email: 'usuario@exemplo.com',
+            id: '123456'
+          };
+          
+          // Atualizar a interface com os dados do usuário
+          updateUserInterface(userData);
+          
+          // Inicializar o sistema de notificações
+          if (window.NotificationSystem) {
+            window.NotificationSystem.init();
+          }
+        } catch (error) {
+          console.error('Erro ao processar autenticação:', error);
+          // Redirecionar para login em caso de erro
+          window.location.href = '/login.html?redirect=comunidade.html';
+        }
+      } else {
+        // Sem token, redirecionar para login
+        window.location.href = '/login.html?redirect=comunidade.html';
+      }
+    });
+    
+    // Função para atualizar a interface com os dados do usuário
+    function updateUserInterface(userData) {
+      console.log('Atualizando interface com dados do usuário:', userData);
+      
+      // Atualizar nome do usuário onde for necessário
+      const userNameElements = document.querySelectorAll('.user-name');
+      if (userNameElements.length > 0) {
+        userNameElements.forEach(element => {
+          element.textContent = userData.name;
+        });
+      }
+      
+      // Atualizar avatar do usuário onde for necessário
+      const avatarElements = document.querySelectorAll('.avatar, .user-avatar');
+      if (avatarElements.length > 0) {
+        avatarElements.forEach(element => {
+          // Verificar se o elemento é um contêiner que pode exibir iniciais
+          if (element.tagName === 'DIV') {
+            const initials = userData.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            element.textContent = initials;
+          }
+        });
+      }
+      
+      // Atualizar nome nos comentários já existentes
+      const authorElements = document.querySelectorAll('.post-author-name');
+      if (authorElements.length > 0) {
+        // Atualizar apenas o primeiro comentário como exemplo
+        // Em um ambiente real, isso seria dinâmico
+        if (authorElements[0]) {
+          authorElements[0].textContent = userData.name;
+        }
+      }
+    }
+
+    // Função para fazer logout
+    function logout() {
+      // Remover token e dados do usuário
+      localStorage.removeItem('token');
+      localStorage.removeItem('userName');
+      
+      // Redirecionar para a página de login
+      window.location.href = '/login.html';
+    }
+
+    
+        // ---------------------------------------------------
+        function openProfileMenu() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function quickLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos');
+                return;
+            }
+
+            // Aqui você implementaria a lógica real de login
+            // Por enquanto, apenas redirecionamos para o dashboard
+            window.location.href = 'dashboard.html';
+        }
+
+        //----------------------------------------------------
+  </script>
+  
+</body>
+</html> 
