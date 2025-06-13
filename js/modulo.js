@@ -116,17 +116,7 @@
             window.location.href = 'dashboard.html';
         }
 
-        function openProfileMenu() {
-            // Simular abertura de menu de perfil
-            const hasLoginPage = true; // Definir como true se a página de login existir
-            
-            if (hasLoginPage) {
-                // Redirecionar para a página de login
-                window.location.href = 'login.html';
-            } else {
-                alert('Menu de perfil (em desenvolvimento)');
-            }
-        }
+       
         
         // Função para criar o botão de alternância de tema
         function createThemeToggle() {
@@ -173,4 +163,27 @@
         document.addEventListener('DOMContentLoaded', function() {
             createThemeToggle();
         });
+
+        // ---------------------------------------------------
+        function openProfileMenu() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function quickLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Por favor, preencha todos os campos');
+                return;
+            }
+
+            // Aqui você implementaria a lógica real de login
+            // Por enquanto, apenas redirecionamos para o dashboard
+            window.location.href = 'dashboard.html';
+        }
 
