@@ -7,7 +7,7 @@
 
 // URL base da API
 const API_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:8080/api' 
+  ? 'http://localhost:5000/api' 
   : '/api';
 
 // Configurações padrão para requisições fetch
