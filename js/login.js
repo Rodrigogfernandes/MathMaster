@@ -73,7 +73,7 @@
         });
 
         // Função para validar o formulário de login
-        function login(event) {
+        async function login(event) {
             event.preventDefault();
 
             const email = document.getElementById('loginEmail').value;
@@ -91,47 +91,45 @@
                 isValid = false;
             }
 
-            // Validar senha (simulação - em produção, isso seria verificado no servidor)
+            // Validar senha
             if (password.length < 6) {
                 document.getElementById('login-password-error').classList.add('show');
                 isValid = false;
             }
 
-            // Se tudo estiver válido, enviar o formulário (simulação)
+            // Se tudo estiver válido, enviar o formulário
             if (isValid) {
-                console.log('Login bem-sucedido!');
+                try {
+                    const response = await login(email, password);
+                    
+                    // Armazenar o token no localStorage
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('userName', response.user.name);
 
-                // Simulação de resposta da API
-                const mockApiResponse = {
-                    success: true,
-                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NTYiLCJlbWFpbCI6InRlc3RlQGV4YW1wbGUuY29tIn0.abc123', // Token de exemplo
-                    user: {
-                        id: '123456',
-                        name: 'Usuário de Teste',
-                        email: email
+                    // Verificar se há um parâmetro de redirecionamento na URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectPage = urlParams.get('redirect');
+
+                    if (redirectPage) {
+                        // Redirecionar para a página solicitada
+                        window.location.href = redirectPage;
+                    } else {
+                        // Redirecionar para o dashboard por padrão
+                        window.location.href = 'dashboard.html';
                     }
-                };
-
-                // Armazenar o token no localStorage
-                localStorage.setItem('token', mockApiResponse.token);
-                localStorage.setItem('userName', mockApiResponse.user.name);
-
-                // Verificar se há um parâmetro de redirecionamento na URL
-                const urlParams = new URLSearchParams(window.location.search);
-                const redirectPage = urlParams.get('redirect');
-
-                if (redirectPage) {
-                    // Redirecionar para a página solicitada
-                    window.location.href = redirectPage;
-                } else {
-                    // Redirecionar para o dashboard por padrão
-                    window.location.href = 'dashboard.html';
+                } catch (error) {
+                    console.error('Erro no login:', error);
+                    if (error.status === 401) {
+                        document.getElementById('login-password-error').classList.add('show');
+                    } else {
+                        document.getElementById('login-email-error').classList.add('show');
+                    }
                 }
             }
         }
 
         // Função para validar o formulário de cadastro
-        function registerUser(event) {
+        async function registerUser(event) {
             event.preventDefault();
 
             const name = document.getElementById('register-name').value;
@@ -178,21 +176,33 @@
                 isValid = false;
             }
 
-            // Se tudo estiver válido, enviar o formulário (simulação)
+            // Se tudo estiver válido, enviar o formulário
             if (isValid) {
-                console.log('Cadastro bem-sucedido!');
-                // Aqui você adicionaria o código para enviar os dados ao servidor
+                try {
+                    await register({
+                        name,
+                        email,
+                        password
+                    });
 
-                // Mostrar mensagem de sucesso
-                document.getElementById('successMessage').classList.add('show');
+                    // Mostrar mensagem de sucesso
+                    document.getElementById('successMessage').classList.add('show');
 
-                // Limpar o formulário
-                document.getElementById('register-form').reset();
+                    // Limpar o formulário
+                    document.getElementById('register-form').reset();
 
-                // Mudar para a aba de login após um breve delay
-                setTimeout(() => {
-                    switchTab('login');
-                }, 3000);
+                    // Mudar para a aba de login após um breve delay
+                    setTimeout(() => {
+                        switchTab('login');
+                    }, 3000);
+                } catch (error) {
+                    console.error('Erro no registro:', error);
+                    if (error.status === 409) {
+                        document.getElementById('register-email-error').classList.add('show');
+                    } else {
+                        alert('Erro ao realizar o cadastro. Por favor, tente novamente.');
+                    }
+                }
             }
         }
 
