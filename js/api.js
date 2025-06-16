@@ -123,6 +123,28 @@ const AchievementsAPI = {
     }
 };
 
+// API do perfil do usuário
+const UserProfileAPI = {
+    getUserProfile: async (userId) => {
+        return fetchAPI(`/user/${userId}`);
+    },
+
+    updateUserProfile: async (userId, profileData) => {
+        return fetchAPI(`/user/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify(profileData)
+        });
+    },
+
+    getUserAchievements: async (userId) => {
+        return fetchAPI(`/user/${userId}/achievements`);
+    },
+
+    getUserTopics: async (userId) => {
+        return fetchAPI(`/user/${userId}/topics`);
+    }
+};
+
 // API da Comunidade
 const CommunityAPI = {
     getPosts: async () => {

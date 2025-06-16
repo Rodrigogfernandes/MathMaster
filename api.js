@@ -7,7 +7,7 @@
 
 // URL base da API
 const API_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:5000/api' 
+  ? 'http://localhost:8080/api' 
   : '/api';
 
 // Configurações padrão para requisições fetch
@@ -706,7 +706,7 @@ async function clearAllNotifications() {
           // Carregar o script do socket.io dinamicamente
           const script = document.createElement('script');
           script.src = window.location.hostname === 'localhost' 
-            ? 'http://localhost:5000/socket.io/socket.io.js'
+            ? 'http://localhost:8080/socket.io/socket.io.js'
             : '/socket.io/socket.io.js';
           script.async = true;
           
@@ -737,7 +737,7 @@ async function clearAllNotifications() {
   function connectSocket() {
     return new Promise((resolve, reject) => {
       const serverUrl = window.location.hostname === 'localhost'
-        ? 'http://localhost:5000'
+        ? 'http://localhost:8080'
         : window.location.origin;
       
       try {

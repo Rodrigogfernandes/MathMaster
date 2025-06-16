@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Meu Perfil</title>
+    <link rel="stylesheet" href="css/perfil.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">M</div>
+                <span>MathMaster</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="dashboard.html">Módulos</a></li>
+                    <li><a href="conquistas.html">Conquistas</a></li>
+                    <li><a href="comunidade.html">Comunidade</a></li>
+                    <li><a href="perfil.html" class="active">Meu Perfil</a></li>
+                </ul>
+            </nav>
+            <div class="user-profile">
+                <div class="user-stats">
+                    <div class="coins">
+                        <span>🪙</span>
+                        <span>0</span>
+                    </div>
+                </div>
+                <div class="avatar" onclick="openProfileMenu()">
+                    <img src="assets/images/avatar.jpg" alt="Avatar">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="profile-container">
+            <div class="profile-main">
+                <!-- Cabeçalho do Perfil -->
+                <div class="profile-header">
+                    <div class="profile-cover">
+
+                        <button class="edit-cover-btn" onclick="openUploadModal('cover')">
+                            <i class="fas fa-camera"></i>
+                            <span class="edit-cover-text">Editar capa</span>
+                        </button>
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-avatar-container">
+                            <div class="profile-avatar">
+                                <img src="assets/images/avatar.jpg" alt="Avatar">
+                            </div>
+                            <button class="edit-avatar-btn" onclick="openUploadModal('avatar')">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-details">
+                            <h1>Aluno</h1>
+                            <p>@aluno</p>
+                            <p>Estudante apaixonado por matemática e programação.</p>
+                            <div class="profile-stats">
+                                <div class="stat">
+                                    <span class="stat-value">150</span>
+                                    <span class="stat-label">Seguidores</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">75</span>
+                                    <span class="stat-label">Seguindo</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">45</span>
+                                    <span class="stat-label">Amigos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seção de Edição de Perfil -->
+                <div class="profile-edit-section">
+                    <button class="edit-profile-btn">
+                        <i class="fas fa-edit"></i>
+                        Editar Perfil
+                    </button>
+                    <button class="change-password-btn">
+                        <i class="fas fa-key"></i>
+                        Alterar Senha
+                    </button>
+                </div>
+
+                <form class="edit-profile-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="name">Nome</label>
+                        <input type="text" id="name" name="name" value="João Silva">
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Nome de Usuário</label>
+                        <input type="text" id="username" name="username" value="@joaosilva">
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Biografia</label>
+                        <textarea id="bio" name="bio"
+                            rows="3">Estudante apaixonado por matemática e programação.</textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Cancelar</button>
+                        <button type="submit" class="btn-save">Salvar</button>
+                    </div>
+                </form>
+
+                <!-- Seção de Conquistas -->
+                <div class="profile-achievements">
+                    <h2>Conquistas</h2>
+                    <div class="achievements-grid">
+                        <!-- Será preenchido via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="profile-sidebar">
+                <!-- Lista de Amigos -->
+                <div class="sidebar-section">
+                    <h3>Amigos</h3>
+                    <div class="friends-list">
+                        <!-- Será preenchido via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Lista de Seguidores -->
+                <div class="sidebar-section">
+                    <h3>Seguidores</h3>
+                    <div class="followers-list">
+                        <!-- Será preenchido via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Lista de Seguindo -->
+                <div class="sidebar-section">
+                    <h3>Seguindo</h3>
+                    <div class="following-list">
+                        <!-- Será preenchido via JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modais -->
+    <div class="upload-modal">
+        <div class="upload-container">
+            <h2>Alterar Foto</h2>
+            <div class="upload-options">
+                <div class="upload-option">
+                    <label for="avatar-upload">
+                        <i class="fas fa-user"></i>
+                        Foto de Perfil
+                    </label>
+                    <input type="file" id="avatar-upload" accept="image/*">
+                </div>
+                <div class="upload-option">
+                    <label for="cover-upload">
+                        <i class="fas fa-image"></i>
+                        Foto de Capa
+                    </label>
+                    <input type="file" id="cover-upload" accept="image/*">
+                </div>
+            </div>
+            <div class="upload-preview">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+            <div class="upload-actions">
+                <button class="btn-cancel">Cancelar</button>
+                <button class="btn-save">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="password-modal">
+        <div class="password-container">
+            <h2>Alterar Senha</h2>
+            <form class="password-form">
+                <div class="form-group">
+                    <label for="current-password">Senha Atual</label>
+                    <input type="password" id="current-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Nova Senha</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Nova Senha</label>
+                    <input type="password" id="confirm-password" required>
+                </div>
+                <div class="password-actions">
+                    <button type="button" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="components/menu.js"></script>
+    <script src="components/notifications.js"></script>
+    <script src="components/theme.js"></script>
+    <script src="js/perfil.js"></script>
+    <script src="/api.js"></script>
+    <script src="/js/api.js"></script>
+</body>
+
+</html>

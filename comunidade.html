@@ -20,6 +20,7 @@
                     <li><a href="dashboard.html">Módulos</a></li>
                     <li><a href="conquistas.html">Conquistas</a></li>
                     <li><a href="comunidade.html" class="active">Comunidade</a></li>
+                    <li><a href="perfil.html">Meu Perfil</a></li>
                 </ul>
             </nav>
             <div class="user-profile">
@@ -29,7 +30,7 @@
                         <span>0</span>
                     </div>
                 </div>
-                <div class="avatar" onclick="openProfileMenu()">R</div>
+                <div class="avatar" onclick="openProfileMenu()">A</div>
             </div>
         </div>
     </header>
@@ -278,39 +279,13 @@
         </div>
     </div>
     
-    <!-- Modal de Login Rápido -->
-    <div class="quick-login-modal" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Login Rápido</h2>
-                <span class="close-modal" onclick="closeLoginModal()">×</span>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Seu email">
-            </div>
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" placeholder="Sua senha">
-            </div>
-            <div class="form-actions">
-                <button class="btn btn-outline" onclick="closeLoginModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="quickLogin()">Entrar</button>
-            </div>
-            <p style="margin-top: 15px; text-align: center;">
-                <a href="login.html" style="color: var(--primary); text-decoration: none;">
-                    Ir para página de login completa
-                </a>
-            </p>
-        </div>
-    </div>
+
     
     <script src="api.js"></script>
     <script src="components/notifications.js"></script>
-    <script src="components/theme-toggle.js"></script>
-    <script src="components/user-profile.js"></script>
-    <script src="js/comunidades.js"></script>
-    
+    <script src="js/comunidade.js"></script>
+    <script src="components/theme.js"></script>    
+    <script src="components/menu.js"></script>
        
   
 </body>

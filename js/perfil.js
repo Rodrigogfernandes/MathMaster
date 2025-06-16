@@ -1,3 +1,5 @@
+
+
 // Estado global do perfil
 const profileState = {
     isEditing: false,
@@ -35,38 +37,15 @@ function safeSetAttribute(selector, attribute, value) {
     }
 }
 
-// Função para mostrar notificações
-function showNotification(message, type = 'info') {
-    // Remove notificação existente
-    const existingNotification = document.querySelector('.notification');
-    if (existingNotification) {
-        existingNotification.remove();
-    }
-
-    // Cria nova notificação
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    // Remove automaticamente após 3 segundos
-    setTimeout(() => {
-        if (notification.parentNode) {
-            notification.remove();
-        }
-    }, 3000);
-}
-
 // Função para carregar os dados do usuário
 async function loadUserProfile() {
     try {
         // Simulação de carregamento de dados do usuário
         profileState.currentUser = {
-            name: 'Aluno',
-            username: '@aluno',
+            name: 'João Silva',
+            username: '@joaosilva',
             bio: 'Estudante apaixonado por matemática e programação.',
-            avatar: 'assets/images/avatar.jpg',
+            avatar: 'assets/images/avatar.png',
             cover: 'assets/images/cover.jpg',
             followers: 150,
             following: 75,
@@ -95,10 +74,10 @@ function updateProfileUI() {
         return;
     }
     
-    // Atualizar informações básicas
+    // Atualizar informações básicas com segurança
     safeSetContent('.profile-details h1', user.name);
-    safeSetContent('.profile-details p:first-of-type', user.username);
-    safeSetContent('.profile-details p:nth-of-type(2)', user.bio);
+    safeSetContent('[data-profile="username"]', user.username);
+    safeSetContent('[data-profile="bio"]', user.bio);
     
     // Atualizar avatar e capa
     const avatarImg = safeQuerySelector('.profile-avatar img');
@@ -109,13 +88,10 @@ function updateProfileUI() {
     if (headerAvatarImg) headerAvatarImg.src = user.avatar;
     if (coverDiv) coverDiv.style.backgroundImage = `url(${user.cover})`;
     
-    // Atualizar estatísticas
-    const stats = document.querySelectorAll('.stat');
-    if (stats.length >= 3) {
-        stats[0].querySelector('.stat-value').textContent = user.followers;
-        stats[1].querySelector('.stat-value').textContent = user.following;
-        stats[2].querySelector('.stat-value').textContent = user.friends;
-    }
+    // Atualizar estatísticas com atributos data
+    safeSetContent('[data-stat="followers"]', user.followers);
+    safeSetContent('[data-stat="following"]', user.following);
+    safeSetContent('[data-stat="friends"]', user.friends);
 }
 
 // Função para carregar listas de usuários
@@ -123,19 +99,19 @@ async function loadUserLists() {
     try {
         // Simulação de carregamento de dados
         profileState.friends = [
-            { id: 1, name: 'Maria Santos', username: '@mariasantos', avatar: 'assets/images/avatar.jpg' },
-            { id: 2, name: 'Pedro Oliveira', username: '@pedrooliveira', avatar: 'assets/images/avatar.jpg' },
-            { id: 3, name: 'Ana Costa', username: '@anacosta', avatar: 'assets/images/avatar.jpg' }
+            { id: 1, name: 'Maria Santos', username: '@mariasantos', avatar: 'assets/images/avatar.png' },
+            { id: 2, name: 'Pedro Oliveira', username: '@pedrooliveira', avatar: 'assets/images/avatar.png' },
+            { id: 3, name: 'Ana Costa', username: '@anacosta', avatar: 'assets/images/avatar.png' }
         ];
         
         profileState.followers = [
-            { id: 4, name: 'Carlos Silva', username: '@carlossilva', avatar: 'assets/images/avatar.jpg' },
-            { id: 5, name: 'Julia Lima', username: '@julialima', avatar: 'assets/images/avatar.jpg' }
+            { id: 4, name: 'Carlos Silva', username: '@carlossilva', avatar: 'assets/images/avatar.png' },
+            { id: 5, name: 'Julia Lima', username: '@julialima', avatar: 'assets/images/avatar.png' }
         ];
         
         profileState.following = [
-            { id: 6, name: 'Lucas Santos', username: '@lucassantos', avatar: 'assets/images/avatar.jpg' },
-            { id: 7, name: 'Mariana Costa', username: '@marianacosta', avatar: 'assets/images/avatar.jpg' }
+            { id: 6, name: 'Lucas Santos', username: '@lucassantos', avatar: 'assets/images/avatar.png' },
+            { id: 7, name: 'Mariana Costa', username: '@marianacosta', avatar: 'assets/images/avatar.png' }
         ];
         
         // Atualizar as listas na interface
@@ -155,7 +131,7 @@ function createUserItemHTML(user, showChatButton = false) {
     
     return `
         <div class="user-item" data-user-id="${user.id}">
-            <img src="${user.avatar}" alt="${user.name}" onerror="this.src='assets/images/avatar.jpg'">
+            <img src="${user.avatar}" alt="${user.name}" onerror="this.src='assets/images/default-avatar.png'">
             <div class="user-item-info">
                 <h4>${user.name}</h4>
                 <p>${user.username}</p>
@@ -199,8 +175,7 @@ async function loadAchievements() {
         profileState.achievements = [
             { id: 1, icon: 'fa-trophy', title: 'Primeiro Exercício', description: 'Completou seu primeiro exercício' },
             { id: 2, icon: 'fa-star', title: 'Estrela em Ascensão', description: 'Completou 10 exercícios' },
-            { id: 3, icon: 'fa-medal', title: 'Mestre da Matemática', description: 'Completou 50 exercícios' },
-            { id: 4, icon: 'fa-graduation-cap', title: 'Estudante Dedicado', description: 'Completou 100 exercícios' }
+            { id: 3, icon: 'fa-medal', title: 'Mestre da Matemática', description: 'Completou 50 exercícios' }
         ];
         
         // Atualizar conquistas na interface
@@ -299,8 +274,17 @@ async function saveProfileChanges(event) {
     }
 }
 
-// Função para abrir chat (simulação)
+// Função para abrir chat
 function openChat(username) {
+    const chatModal = safeQuerySelector('.chat-modal');
+    if (!chatModal) {
+        console.error('Modal de chat não encontrado');
+        return;
+    }
+    
+    const chatHeader = chatModal.querySelector('.chat-user-info span');
+    const chatMessages = chatModal.querySelector('.chat-messages');
+    
     // Encontrar usuário em todas as listas
     const allUsers = [...profileState.friends, ...profileState.followers, ...profileState.following];
     const user = allUsers.find(u => u.username === username);
@@ -310,8 +294,64 @@ function openChat(username) {
         return;
     }
     
+    // Atualizar cabeçalho
+    if (chatHeader) chatHeader.textContent = user.name;
     profileState.activeChat = user;
-    showNotification(`Abrindo chat com ${user.name}`, 'info');
+    
+    // Limpar mensagens
+    if (chatMessages) chatMessages.innerHTML = '';
+    
+    // Mostrar modal
+    chatModal.style.display = 'block';
+}
+
+// Função para fechar chat
+function closeChat() {
+    const chatModal = safeQuerySelector('.chat-modal');
+    if (chatModal) {
+        chatModal.style.display = 'none';
+        profileState.activeChat = null;
+    }
+}
+
+// Função para enviar mensagem
+function sendMessage() {
+    const input = safeQuerySelector('.chat-input input');
+    const chatMessages = safeQuerySelector('.chat-messages');
+    
+    if (!input || !chatMessages) {
+        console.error('Elementos de chat não encontrados');
+        return;
+    }
+    
+    const message = input.value.trim();
+    
+    if (!message || !profileState.activeChat) return;
+    
+    const timestamp = new Date().toLocaleTimeString();
+    
+    // Adicionar mensagem do usuário
+    chatMessages.innerHTML += `
+        <div class="message sent">
+            ${escapeHtml(message)}
+            <small>${timestamp}</small>
+        </div>
+    `;
+    
+    // Simular resposta
+    setTimeout(() => {
+        chatMessages.innerHTML += `
+            <div class="message received">
+                Olá! Esta é uma resposta automática.
+                <small>${new Date().toLocaleTimeString()}</small>
+            </div>
+        `;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }, 1000);
+    
+    // Limpar input e rolar para a última mensagem
+    input.value = '';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 // Função utilitária para escapar HTML
@@ -338,6 +378,8 @@ function openUploadModal(type) {
     
     const title = modal.querySelector('h2');
     const preview = modal.querySelector('.upload-preview');
+    const avatarOption = modal.querySelector('#avatar-upload')?.parentElement;
+    const coverOption = modal.querySelector('#cover-upload')?.parentElement;
     
     // Limpar preview anterior
     if (preview) preview.innerHTML = '';
@@ -345,6 +387,17 @@ function openUploadModal(type) {
     // Atualizar título
     if (title) {
         title.textContent = type === 'avatar' ? 'Alterar Foto de Perfil' : 'Alterar Foto de Capa';
+    }
+    
+    // Mostrar/esconder opções relevantes
+    if (avatarOption && coverOption) {
+        if (type === 'avatar') {
+            avatarOption.style.display = 'block';
+            coverOption.style.display = 'none';
+        } else {
+            avatarOption.style.display = 'none';
+            coverOption.style.display = 'block';
+        }
     }
     
     // Mostrar modal
@@ -499,7 +552,7 @@ function closePasswordModal() {
 }
 
 // Função para configurar preview de imagem
-function setupImagePreview(inputSelector) {
+function setupImagePreview(inputSelector, callback) {
     const input = safeQuerySelector(inputSelector);
     if (input) {
         input.addEventListener('change', function(e) {
@@ -512,9 +565,10 @@ function setupImagePreview(inputSelector) {
                         const preview = safeQuerySelector('.upload-preview');
                         if (preview) {
                             preview.innerHTML = `
-                                <img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px;">
+                                <img src="${e.target.result}" alt="Preview" style="max-width: 100%; max-height: 200px; object-fit: cover;">
                             `;
                         }
+                        if (callback) callback(e.target.result);
                     };
                     reader.readAsDataURL(file);
                 } catch (error) {
@@ -536,7 +590,7 @@ function safeAddEventListener(selector, event, handler) {
     }
 }
 
-// Event Listeners principais
+// Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     // Carregar perfil
     loadUserProfile();
@@ -546,19 +600,20 @@ document.addEventListener('DOMContentLoaded', () => {
     safeAddEventListener('.edit-profile-form', 'submit', saveProfileChanges);
     safeAddEventListener('.change-password-btn', 'click', openPasswordModal);
     
-    // Configurar botões de cancelar no formulário de edição
-    safeAddEventListener('.edit-profile-form .btn-cancel', 'click', (e) => {
-        e.preventDefault();
-        toggleEditMode();
-    });
-    
-    // Configurar modais de senha
+    // Configurar modais
     safeAddEventListener('.password-modal .btn-cancel', 'click', closePasswordModal);
     safeAddEventListener('.password-form', 'submit', changePassword);
-    
-    // Configurar modais de upload
     safeAddEventListener('.upload-modal .btn-cancel', 'click', closeUploadModal);
     safeAddEventListener('.upload-modal .btn-save', 'click', saveUpload);
+    
+    // Configurar chat
+    safeAddEventListener('.chat-modal .btn-close', 'click', closeChat);
+    safeAddEventListener('.chat-input button', 'click', sendMessage);
+    safeAddEventListener('.chat-input input', 'keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
     
     // Configurar preview de imagens
     setupImagePreview('#avatar-upload');
@@ -566,28 +621,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Fechar modais ao clicar fora deles
     document.addEventListener('click', function(e) {
-        const modals = ['.upload-modal', '.password-modal'];
+        const modals = ['.chat-modal', '.upload-modal', '.password-modal'];
         modals.forEach(modalSelector => {
             const modal = safeQuerySelector(modalSelector);
             if (modal && e.target === modal) {
-                if (modalSelector === '.upload-modal') {
-                    closeUploadModal();
-                } else if (modalSelector === '.password-modal') {
-                    closePasswordModal();
-                }
+                modal.style.display = 'none';
             }
         });
     });
-    
-    // Configurar tecla ESC para fechar modais
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeUploadModal();
-            closePasswordModal();
-        }
-    });
 });
 
-// Torna as funções globais disponíveis para onclick no HTML
-window.openUploadModal = openUploadModal;
-window.openChat = openChat;
