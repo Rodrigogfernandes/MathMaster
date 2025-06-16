@@ -186,7 +186,6 @@ async function startModule(id) {
     method: 'POST'
   });
 }
-
 /**
  * Verificar resposta de exercício
  * @param {string} moduleId - ID do módulo
