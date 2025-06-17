@@ -2,12 +2,13 @@
 package br.com.mathmaster.backend.dto;
 
 public class AuthResponse {
-    private String token; // O token JWT que será enviado ao cliente
-    private String message; // Uma mensagem de sucesso ou erro
-    private Long userId; // Opcional: ID do usuário logado, útil para o frontend
-    private String userName; // Opcional: Nome do usuário logado, útil para o frontend
+    private String token;
+    private String message;
+    private Long userId;
+    private String userName;
+    private String role; // NOVO CAMPO: Para retornar o papel do usuário no login
 
-    // Construtor padrão (sempre bom ter)
+    // Construtor padrão
     public AuthResponse() {
     }
 
@@ -18,11 +19,12 @@ public class AuthResponse {
     }
 
     // Construtor completo: Inclui todas as informações que o frontend pode precisar.
-    public AuthResponse(String token, String message, Long userId, String userName) {
+    public AuthResponse(String token, String message, Long userId, String userName, String role) { // ALTERADO: Adicionado 'role'
         this.token = token;
         this.message = message;
         this.userId = userId;
         this.userName = userName;
+        this.role = role; // Atribui o papel
     }
 
     // Getters
@@ -42,6 +44,10 @@ public class AuthResponse {
         return userName;
     }
 
+    public String getRole() { // NOVO GETTER
+        return role;
+    }
+
     // Setters
     public void setToken(String token) {
         this.token = token;
@@ -57,5 +63,9 @@ public class AuthResponse {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public void setRole(String role) { // NOVO SETTER
+        this.role = role;
     }
 }

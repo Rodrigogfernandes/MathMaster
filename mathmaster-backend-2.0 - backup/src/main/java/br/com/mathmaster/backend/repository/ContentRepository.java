@@ -8,8 +8,7 @@ import java.util.List;
 @Repository
 public interface ContentRepository extends JpaRepository<Content, Long> {
 
-    // Adicione este método. O Spring Data JPA cria a consulta automaticamente
-    // apenas lendo o nome do método. "Encontre Por Id Da Matéria"
-    List<Content> findBySubjectId(Long subjectId);
-
+    // ALTERADO: A barra baixa "_" indica para o Spring Data JPA que ele deve "navegar"
+    // para a propriedade 'subject' (o objeto relacionado) e então acessar o 'id' desse objeto.
+    List<Content> findBySubject_Id(Long subjectId); // CORRIGIDO
 }

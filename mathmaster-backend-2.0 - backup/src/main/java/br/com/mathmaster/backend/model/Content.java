@@ -19,15 +19,14 @@ public class Content {
 
     @ManyToOne
     @JoinColumn(name = "subject_id")
-    @JsonIgnore
+    @JsonIgnore // Mantém o objeto Subject ignorado para evitar loops
     private Subject subject;
 
-    // --- NOVO RELACIONAMENTO COM QUESTION ---
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Question> questions = new ArrayList<>();
 
 
-    // --- GETTERS E SETTERS MANUAIS ---
+    // GETTERS E SETTERS MANUAIS
 
     public Long getId() {
         return id;
@@ -61,12 +60,20 @@ public class Content {
         this.subject = subject;
     }
 
-    // Novo Getter e Setter para a lista de questões
     public List<Question> getQuestions() {
         return questions;
     }
 
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    /**
+     * NOVO: Getter para expor apenas o ID da matéria (Subject) pai.
+     * Isso é útil para o frontend sem serializar o objeto Subject completo.
+     * @return O ID do Subject pai, ou null se não houver Subject.
+     */
+    public Long getSubjectId() { // NOVO GETTER
+        return subject != null ? subject.getId() : null;
     }
 }

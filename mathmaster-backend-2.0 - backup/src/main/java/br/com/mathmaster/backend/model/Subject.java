@@ -15,17 +15,8 @@ public class Subject {
 
     private String description;
 
-    // --- Início do Relacionamento ---
-
-    // Uma Matéria para Muitos Conteúdos
-    // mappedBy: Diz ao JPA "A gestão deste relacionamento já está sendo feita pelo campo 'subject' na classe Content".
-    // cascade: Se salvarmos/deletarmos uma Matéria, seus Conteúdos também serão salvos/deletados em cascata.
-    // orphanRemoval: Se um conteúdo for removido desta lista, ele será deletado do banco.
-    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER) // ALTERADO: Adicionado fetch = FetchType.EAGER
     private List<Content> contents = new ArrayList<>();
-
-    // --- Fim do Relacionamento ---
-
 
     // GETTERS E SETTERS MANUAIS
 

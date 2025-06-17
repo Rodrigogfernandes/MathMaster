@@ -5,21 +5,24 @@ class ProfileMenu {
     constructor() {
         this.isOpen = false;
         this.userData = {
-            name: 'Aluno',
-            email: 'aluno@mathmaster.com',
-            level: 'Iniciante',
-            coins: 350,
-            lessonsCompleted: 0,
-            achievements: 0,
-            joinDate: new Date().toLocaleDateString('pt-BR')
+            name: 'Visitante', // Valor padrão, será atualizado
+            email: '',
+            level: 'Convidado',
+            coins: 0, // Será atualizado pela página
+            lessonsCompleted: 0, // Mockado
+            achievements: 0, // Mockado
+            joinDate: new Date().toLocaleDateString('pt-BR'),
+            avatar: 'V' // Primeira letra do nome padrão
         };
-        
+
         this.init();
     }
 
     init() {
         this.createStyles();
         this.setupEventListeners();
+        // Não carregamos dados do localStorage aqui, pois isso é feito no open() para garantir dados frescos
+        // O updateProfileUI será chamado no open() para garantir que os dados da página atual sejam usados.
     }
 
     // Cria estilos CSS do menu
@@ -47,12 +50,12 @@ class ProfileMenu {
                 backdrop-filter: blur(10px);
                 border: 1px solid rgba(255,255,255,0.2);
             }
-            
+
             .profile-menu.show {
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
-            
+
             .profile-menu::before {
                 content: '';
                 position: absolute;
@@ -67,7 +70,7 @@ class ProfileMenu {
                 transform: rotate(45deg);
                 z-index: -1;
             }
-            
+
             .profile-header {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 padding: 25px;
@@ -76,7 +79,7 @@ class ProfileMenu {
                 position: relative;
                 overflow: hidden;
             }
-            
+
             .profile-header::before {
                 content: '';
                 position: absolute;
@@ -88,7 +91,7 @@ class ProfileMenu {
                 border-radius: 50%;
                 transform: rotate(45deg);
             }
-            
+
             .profile-user-info {
                 display: flex;
                 align-items: center;
@@ -96,7 +99,7 @@ class ProfileMenu {
                 position: relative;
                 z-index: 1;
             }
-            
+
             .profile-avatar {
                 width: 60px;
                 height: 60px;
@@ -111,19 +114,19 @@ class ProfileMenu {
                 border: 3px solid rgba(255,255,255,0.3);
                 backdrop-filter: blur(10px);
             }
-            
+
             .profile-details h3 {
                 margin: 0;
                 font-size: 20px;
                 font-weight: 600;
             }
-            
+
             .profile-details p {
                 margin: 5px 0 0 0;
                 opacity: 0.9;
                 font-size: 14px;
             }
-            
+
             .profile-level {
                 display: inline-block;
                 background: rgba(255,255,255,0.2);
@@ -133,24 +136,24 @@ class ProfileMenu {
                 margin-top: 8px;
                 backdrop-filter: blur(10px);
             }
-            
-           
-            
+
+
+
              .stat:last-child {
                  border-right: none;
              }
-            
+
              .stat:hover {
                  background:rgba(233, 236, 239, 0.24);
              }
-            
+
             .stat-icon {
                 display: block;
                 font-size: 28px;
                 margin-bottom: 5px;
                 filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
             }
-            
+
             .stat-value {
                 display: block;
                 font-weight: bold;
@@ -158,7 +161,7 @@ class ProfileMenu {
                 color: #333;
                 margin-bottom: 4px;
             }
-            
+
             .stat-label {
                 display: block;
                 font-size: 12px;
@@ -167,23 +170,23 @@ class ProfileMenu {
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
             }
-            
+
             .profile-actions {
                 padding: 20px;
                 background: white;
                 border-radius: 0 0 15px 15px;
             }
-            
+
             .profile-section {
                 margin-bottom: 20px;
             }
-            
+
             .profile-section:last-child {
                 margin-bottom: 0;
             }
-            
-           
-            
+
+
+
             .profile-btn {
                 display: flex;
                 align-items: center;
@@ -202,7 +205,7 @@ class ProfileMenu {
                 position: relative;
                 overflow: hidden;
             }
-            
+
             .profile-btn::before {
                 content: '';
                 position: absolute;
@@ -213,46 +216,46 @@ class ProfileMenu {
                 background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
                 transition: left 0.5s ease;
             }
-            
+
             .profile-btn:hover::before {
                 left: 100%;
             }
-            
+
             .profile-btn:hover {
                 background: #f8f9fa;
                 transform: translateX(5px);
                 box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             }
-            
+
             .profile-btn:last-child {
                 margin-bottom: 0;
             }
-            
+
             .profile-btn.danger {
                 color: #dc3545;
             }
-            
+
             .profile-btn.danger:hover {
                 background: #fff5f5;
                 color: #c82333;
             }
-            
+
             .profile-btn.primary {
                 background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
             }
-            
+
             .profile-btn.primary:hover {
                 transform: translateX(5px) translateY(-2px);
                 box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
             }
-            
+
             .profile-btn-icon {
                 font-size: 16px;
                 width: 20px;
                 text-align: center;
             }
-            
+
             .profile-menu-overlay {
                 position: fixed;
                 top: 0;
@@ -265,12 +268,12 @@ class ProfileMenu {
                 transition: opacity 0.3s ease;
                 pointer-events: none;
             }
-            
+
             .profile-menu-overlay.show {
                 opacity: 1;
                 pointer-events: all;
             }
-            
+
             /* Modal de Confirmação */
             .confirmation-modal {
                 position: fixed;
@@ -288,12 +291,12 @@ class ProfileMenu {
                 transition: all 0.3s ease;
                 backdrop-filter: blur(5px);
             }
-            
+
             .confirmation-modal.show {
                 opacity: 1;
                 visibility: visible;
             }
-            
+
             .modal-content {
                 background: white;
                 border-radius: 20px;
@@ -305,11 +308,11 @@ class ProfileMenu {
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 overflow: hidden;
             }
-            
+
             .confirmation-modal.show .modal-content {
                 transform: scale(1) translateY(0);
             }
-            
+
             .modal-header {
                 padding: 30px 30px 20px;
                 text-align: center;
@@ -318,7 +321,7 @@ class ProfileMenu {
                 position: relative;
                 overflow: hidden;
             }
-            
+
             .modal-header::before {
                 content: '';
                 position: absolute;
@@ -330,7 +333,7 @@ class ProfileMenu {
                 border-radius: 50%;
                 transform: rotate(45deg);
             }
-            
+
             .modal-icon {
                 font-size: 48px;
                 margin-bottom: 15px;
@@ -338,7 +341,7 @@ class ProfileMenu {
                 position: relative;
                 z-index: 1;
             }
-            
+
             .modal-title {
                 font-size: 24px;
                 font-weight: 600;
@@ -346,26 +349,26 @@ class ProfileMenu {
                 position: relative;
                 z-index: 1;
             }
-            
+
             .modal-body {
                 padding: 30px;
                 text-align: center;
             }
-            
+
             .modal-message {
                 font-size: 16px;
                 color: #666;
                 line-height: 1.5;
                 margin: 0 0 30px 0;
             }
-            
+
             .modal-actions {
                 display: flex;
                 gap: 15px;
                 justify-content: center;
                 margin-top: 20px;
             }
-            
+
             .modal-btn {
                 padding: 12px 24px;
                 border: none;
@@ -378,7 +381,7 @@ class ProfileMenu {
                 position: relative;
                 overflow: hidden;
             }
-            
+
             .modal-btn::before {
                 content: '';
                 position: absolute;
@@ -389,34 +392,34 @@ class ProfileMenu {
                 background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
                 transition: left 0.5s ease;
             }
-            
+
             .modal-btn:hover::before {
                 left: 100%;
             }
-            
+
             .modal-btn.cancel {
                 background: #f8f9fa;
                 color: #666;
                 border: 2px solid #e9ecef;
             }
-            
+
             .modal-btn.cancel:hover {
                 background: #e9ecef;
                 color: #333;
                 transform: translateY(-2px);
                 box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             }
-            
+
             .modal-btn.confirm {
                 background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
                 color: white;
             }
-            
+
             .modal-btn.confirm:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
             }
-            
+
             @media (max-width: 768px) {
                 .profile-menu {
                     right: 10px;
@@ -424,27 +427,27 @@ class ProfileMenu {
                     min-width: auto;
                     max-width: none;
                 }
-                
+
                 .modal-content {
                     margin: 20px;
                     width: auto;
                 }
-                
+
                 .modal-actions {
                     flex-direction: column;
                 }
-                
+
                 .modal-btn {
                     width: 100%;
                 }
             }
-            
+
             .profile-quick-stats {
                 display: flex;
                 gap: 10px;
                 margin-top: 10px;
             }
-            
+
             .quick-stat {
                 flex: 1;
                 background: rgba(255,255,255,0.2);
@@ -453,20 +456,20 @@ class ProfileMenu {
                 text-align: center;
                 backdrop-filter: blur(10px);
             }
-            
+
             .quick-stat-value {
                 font-weight: bold;
                 font-size: 16px;
                 display: block;
             }
-            
+
             .quick-stat-label {
                 font-size: 11px;
                 opacity: 0.8;
                 margin-top: 2px;
             }
         `;
-        
+
         document.head.appendChild(style);
     }
 
@@ -477,8 +480,8 @@ class ProfileMenu {
             const avatar = document.querySelector('.avatar');
             const profileMenu = document.getElementById('profileMenu');
             const overlay = document.getElementById('profileMenuOverlay');
-            
-            if (this.isOpen && avatar && !avatar.contains(event.target) && 
+
+            if (this.isOpen && avatar && !avatar.contains(event.target) &&
                 profileMenu && !profileMenu.contains(event.target)) {
                 this.close();
             }
@@ -519,7 +522,7 @@ class ProfileMenu {
 
         const avatarRect = avatar.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
+
         // Posiciona o menu relativo ao avatar
         profileMenu.style.top = (avatarRect.bottom + scrollTop + 10) + 'px';
         profileMenu.style.right = '20px';
@@ -534,30 +537,31 @@ class ProfileMenu {
 
         let profileMenu = document.getElementById('profileMenu');
         let overlay = document.getElementById('profileMenuOverlay');
-        
+
         if (!profileMenu) {
             profileMenu = this.createMenu();
             document.body.appendChild(profileMenu);
         }
-        
+
         if (!overlay) {
             overlay = this.createOverlay();
             document.body.appendChild(overlay);
         }
-        
-        this.updateMenuData();
+
+        this.updateProfileDataFromPage(); // NOVO: Pega dados da página atual
+        this.updateMenuData(); // Atualiza o HTML do menu com os dados
         this.updateMenuPosition();
-        
+
         // Mostra overlay
         overlay.style.display = 'block';
         setTimeout(() => overlay.classList.add('show'), 10);
-        
+
         // Mostra menu
         profileMenu.style.display = 'block';
         setTimeout(() => {
             profileMenu.classList.add('show');
         }, 10);
-        
+
         this.isOpen = true;
     }
 
@@ -565,21 +569,21 @@ class ProfileMenu {
     close() {
         const profileMenu = document.getElementById('profileMenu');
         const overlay = document.getElementById('profileMenuOverlay');
-        
+
         if (profileMenu) {
             profileMenu.classList.remove('show');
             setTimeout(() => {
                 profileMenu.style.display = 'none';
             }, 300);
         }
-        
+
         if (overlay) {
             overlay.classList.remove('show');
             setTimeout(() => {
                 overlay.style.display = 'none';
             }, 300);
         }
-        
+
         this.isOpen = false;
     }
 
@@ -596,16 +600,17 @@ class ProfileMenu {
         const menu = document.createElement('div');
         menu.id = 'profileMenu';
         menu.className = 'profile-menu';
-        menu.innerHTML = this.getMenuHTML();
+        menu.innerHTML = this.getMenuHTML(); // O HTML é gerado aqui
         return menu;
     }
 
-    // HTML do menu
+    // HTML do menu (mantido em sua essência)
     getMenuHTML() {
+        // Acessa this.userData que já deve ter sido populado por updateProfileDataFromPage e updateMenuData
         return `
             <div class="profile-header">
                 <div class="profile-user-info">
-                    <div class="profile-avatar">${this.userData.name.charAt(0).toUpperCase()}</div>
+                    <div class="profile-avatar">${this.userData.avatar}</div>
                     <div class="profile-details">
                         <h3>${this.userData.name}</h3>
                         <p>${this.userData.email}</p>
@@ -620,8 +625,8 @@ class ProfileMenu {
                     </div>
                     <div class="quick-stat">
                         <span class="stat-icon">🏆</span>
-                        <span class="quick-stat-value">${this.userData.coins}</span>
-                        <span class="quick-stat-label">Moedas</span>
+                        <span class="quick-stat-value">${this.userData.achievements}</span>
+                        <span class="quick-stat-label">Conquistas</span>
                     </div>
                     <div class="quick-stat">
                         <span class="stat-icon">📚</span>
@@ -630,16 +635,10 @@ class ProfileMenu {
                     </div>
                 </div>
             </div>
-            
-            <div class="profile-stats">
-                
-               
-               
-            </div>
-            
+
             <div class="profile-actions">
                 <div class="profile-section">
-                    
+
                     <button onclick="profileMenu.editProfile()" class="profile-btn">
                         <span class="profile-btn-icon">👤</span>
                         <span>Meu Perfil</span>
@@ -655,7 +654,7 @@ class ProfileMenu {
                     <button onclick="profileMenu.settings()" class="profile-btn">
                         <span class="profile-btn-icon">⚙️</span>
                         <span>Configurações</span>
-                    </button>                  
+                    </button>
                     <button onclick="profileMenu.logout()" class="profile-btn danger">
                         <span class="profile-btn-icon">🚪</span>
                         <span>Sair</span>
@@ -698,12 +697,12 @@ class ProfileMenu {
     // Mostra modal de confirmação
     showConfirmationModal() {
         let modal = document.getElementById('confirmationModal');
-        
+
         if (!modal) {
             modal = this.createConfirmationModal();
             document.body.appendChild(modal);
         }
-        
+
         modal.style.display = 'flex';
         setTimeout(() => {
             modal.classList.add('show');
@@ -737,68 +736,99 @@ class ProfileMenu {
         }
     }
 
-    // Atualiza dados do menu
-    updateMenuData() {
+    // NOVO: Coleta dados do usuário diretamente da página/localStorage quando o menu é aberto
+    updateProfileDataFromPage() {
+        const userName = localStorage.getItem('user_name'); //
+        const userEmail = localStorage.getItem('user_email'); //
+        const userRole = localStorage.getItem('user_role'); //
+
+        // Tenta pegar as moedas do elemento HTML da página atual
+        const coinsElement = document.querySelector('.coins span:last-child');
+        const currentCoins = coinsElement ? parseInt(coinsElement.textContent) : 0;
+
+        if (userName) {
+            this.userData.name = userName;
+            this.userData.email = userEmail || '';
+            this.userData.level = userRole === 'ADMIN' ? 'Admin' : 'Usuário';
+            this.userData.avatar = userName.charAt(0).toUpperCase();
+            this.userData.coins = currentCoins; // Pega as moedas da página atual
+            // Manter outros dados mockados ou buscar do backend se necessário para o menu
+            this.userData.achievements = 0; // Ex: mock para MVP
+            this.userData.lessonsCompleted = 0; // Ex: mock para MVP
+        } else {
+            // Se não há usuário logado, mostra dados padrão
+            this.userData = {
+                name: 'Visitante', email: '...', level: 'Convidado',
+                coins: 0, lessonsCompleted: 0, achievements: 0, avatar: 'V'
+            };
+        }
+    }
+
+
+    // Atualiza o HTML do menu com os dados atuais (chamado após updateProfileDataFromPage)
+    updateMenuData() { // Renomeado de updateUserData anterior, mais específico para o HTML
         const profileMenu = document.getElementById('profileMenu');
         if (!profileMenu) return;
 
-        // Atualiza valores
-        const coinElements = profileMenu.querySelectorAll('.stat-value, .quick-stat-value');
-        coinElements[0].textContent = this.userData.coins; // stat
-        if (coinElements[2]) coinElements[2].textContent = this.userData.coins; // quick-stat
-        
-        const lessonElements = profileMenu.querySelectorAll('.stat-value');
-        if (lessonElements[1]) lessonElements[1].textContent = this.userData.lessonsCompleted;
-        
-        const achievementElements = profileMenu.querySelectorAll('.stat-value');
-        if (achievementElements[2]) achievementElements[2].textContent = this.userData.achievements;
+        // Atualiza os elementos HTML do menu com os dados do this.userData
+        const avatarEl = profileMenu.querySelector('.profile-avatar');
+        if(avatarEl) avatarEl.textContent = this.userData.avatar;
+
+        const nameEl = profileMenu.querySelector('.profile-details h3');
+        if(nameEl) nameEl.textContent = this.userData.name;
+
+        const emailEl = profileMenu.querySelector('.profile-details p');
+        if(emailEl) emailEl.textContent = this.userData.email;
+
+        const levelEl = profileMenu.querySelector('.profile-level');
+        if(levelEl) levelEl.textContent = this.userData.level;
+
+        const coinsEl = profileMenu.querySelector('.profile-quick-stats .quick-stat-value');
+        if(coinsEl) coinsEl.textContent = this.userData.coins;
+
+        const achievementsEl = profileMenu.querySelectorAll('.profile-quick-stats .quick-stat-value')[1]; // Supondo a ordem
+        if(achievementsEl) achievementsEl.textContent = this.userData.achievements;
+
+        const lessonsEl = profileMenu.querySelectorAll('.profile-quick-stats .quick-stat-value')[2]; // Supondo a ordem
+        if(lessonsEl) lessonsEl.textContent = this.userData.lessonsCompleted;
     }
 
-    // Atualiza dados do usuário
-    updateUserData(data) {
-        this.userData = { ...this.userData, ...data };
-        this.updateMenuData();
-    }
-
-    // Ações do menu
+    // Ações do menu (mantidas)
     editProfile() {
         this.close();
-        
-         // Adiciona efeito de loading
-         setTimeout(() => {
-            this.showNotification('Até logo! Redirecionando...', 'success');
-            setTimeout(() => {
-                window.location.href = 'perfil.html';
-            }, 1000);
-        }, 1500);
+        if (typeof showNotification === 'function') {
+            showNotification('Redirecionando para o perfil...', 'info');
+        }
+        setTimeout(() => { window.location.href = 'perfil.html'; }, 500);
     }
 
     viewProgress() {
         this.close();
-        this.showNotification('Relatório de progresso em desenvolvimento!', 'info');
+        if (typeof showNotification === 'function') {
+            showNotification('Relatório de progresso em desenvolvimento!', 'info');
+        }
     }
 
     achievements() {
         this.close();
-      
-
-         // Adiciona efeito de loading
-        setTimeout(() => {
-            this.showNotification('Até logo! Redirecionando...', 'success');
-            setTimeout(() => {
-                window.location.href = 'conquistas.html';
-            }, 1000);
-        }, 1500);
+        if (typeof showNotification === 'function') {
+            showNotification('Redirecionando para as conquistas...', 'info');
+        }
+        setTimeout(() => { window.location.href = 'conquistas.html'; }, 500);
     }
 
     settings() {
         this.close();
-        this.showNotification('Configurações em desenvolvimento!', 'info');
+        if (typeof showNotification === 'function') {
+            showNotification('Configurações em desenvolvimento!', 'info');
+        }
     }
 
     help() {
         this.close();
-        this.showNotification('Central de ajuda em desenvolvimento!', 'info');
+        if (typeof showNotification === 'function') {
+            showNotification('Central de ajuda em desenvolvimento!', 'info');
+        }
     }
 
     // Inicia processo de logout
@@ -812,61 +842,51 @@ class ProfileMenu {
         this.hideConfirmationModal();
     }
 
-    // Confirma logout
-    confirmLogout() {
+    // Confirma logout (REFORÇADO)
+    async confirmLogout() {
         this.hideConfirmationModal();
-        this.showNotification('Saindo da sua conta...', 'info');
-        
-        // Adiciona efeito de loading
-        setTimeout(() => {
-            this.showNotification('Até logo! Redirecionando...', 'success');
+        if (typeof showNotification === 'function') {
+            showNotification('Saindo da sua conta...', 'info');
+        }
+
+        try {
+            await window.MathMasterAPI.Auth.logout();
+        } catch (error) {
+            console.error("Ocorreu um erro ao tentar fazer logout no servidor:", error);
+        } finally {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('user_name');
+            localStorage.removeItem('user_id');
+            localStorage.removeItem('user_role');
+            localStorage.removeItem('user_email'); // NOVO: Limpa user_email
+            sessionStorage.clear(); // NOVO: Limpa sessionStorage
+
             setTimeout(() => {
                 window.location.href = 'login.html';
             }, 1000);
-        }, 1500);
+        }
     }
 
-    // Sistema de notificações integrado
+    // Sistema de notificações integrado (fallback se showNotification não for global)
     showNotification(message, type = 'info', duration = 3000) {
-        // Verifica se existe sistema de notificações global
-        if (typeof showNotification === 'function') {
-            showNotification(message, type, duration);
+        if (typeof window.showNotification === 'function') {
+            window.showNotification(message, type, duration);
             return;
         }
-
-        // Fallback simples
+        // Fallback simples se showNotification não estiver global
         const notification = document.createElement('div');
         notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 15px 20px;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-            z-index: 2001;
-            max-width: 300px;
+            position: fixed; top: 20px; right: 20px; background: white; padding: 15px 20px;
+            border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); z-index: 2001; max-width: 300px;
             border-left: 4px solid ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
+            transform: translateX(100%); transition: transform 0.3s ease;
         `;
         notification.textContent = message;
-        
         document.body.appendChild(notification);
-        
-        // Anima entrada
-        setTimeout(() => {
-            notification.style.transform = 'translateX(0)';
-        }, 10);
-        
-        // Remove notificação
+        setTimeout(() => { notification.style.transform = 'translateX(0)'; }, 10);
         setTimeout(() => {
             notification.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                if (notification.parentElement) {
-                    notification.remove();
-                }
-            }, 300);
+            setTimeout(() => { if (notification.parentElement) { notification.remove(); } }, 300);
         }, duration);
     }
 }
@@ -875,6 +895,7 @@ class ProfileMenu {
 const profileMenu = new ProfileMenu();
 
 // Função global para abrir o menu (compatibilidade com o HTML)
+// Esta função é o ponto de entrada externo para abrir o menu.
 function openProfileMenu() {
-    profileMenu.open();
+    profileMenu.open(); // Chama o método open() da instância
 }

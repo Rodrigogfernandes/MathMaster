@@ -17,6 +17,8 @@ public class User {
 
     private String password;
 
+    private String role; // NOVO CAMPO: Para armazenar o papel do usuário (ex: "USER", "ADMIN")
+
     // GETTERS MANUAIS
     public Long getId() {
         return id;
@@ -34,6 +36,10 @@ public class User {
         return password;
     }
 
+    public String getRole() { // NOVO GETTER
+        return role;
+    }
+
     // SETTERS MANUAIS
     public void setId(Long id) {
         this.id = id;
@@ -49,5 +55,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(String role) { // NOVO SETTER
+        this.role = role;
     }
 }

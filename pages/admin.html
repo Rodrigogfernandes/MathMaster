@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Painel Administrativo</title>
+    <link rel="stylesheet" href="../css/admin.css"> <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<header class="admin-header">
+    <div class="container header-content">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <span>MathMaster Admin</span>
+        </div>
+        <nav class="admin-nav">
+            <ul>
+                <li><a href="index.html">Sair do Admin</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="admin-container">
+    <aside class="admin-sidebar">
+        <h2>Gerenciamento</h2>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" data-entity="users">
+                <i class="fas fa-users"></i>
+                <span>Usuários</span>
+            </li>
+            <li class="menu-item" data-entity="subjects">
+                <i class="fas fa-book"></i>
+                <span>Matérias</span>
+            </li>
+            <li class="menu-item" data-entity="contents">
+                <i class="fas fa-file-alt"></i>
+                <span>Conteúdos</span>
+            </li>
+            <li class="menu-item" data-entity="questions">
+                <i class="fas fa-question-circle"></i>
+                <span>Questões</span>
+            </li>
+            <li class="menu-item" data-entity="achievements">
+                <i class="fas fa-trophy"></i>
+                <span>Conquistas</span>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="admin-main-content">
+        <section id="users-section" class="admin-section active">
+            <h2>Usuários <button class="btn btn-primary btn-add" data-entity-type="users"><i class="fas fa-plus"></i> Adicionar</button></h2> <div class="table-responsive">
+            <table class="admin-table" data-entity="users">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </section>
+
+        <section id="subjects-section" class="admin-section">
+            <h2>Matérias <button class="btn btn-primary btn-add" data-entity-type="subjects"><i class="fas fa-plus"></i> Adicionar</button></h2> <div class="table-responsive">
+            <table class="admin-table" data-entity="subjects">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </section>
+
+        <section id="contents-section" class="admin-section">
+            <h2>Conteúdos <button class="btn btn-primary btn-add" data-entity-type="contents"><i class="fas fa-plus"></i> Adicionar</button></h2> <div class="table-responsive">
+            <table class="admin-table" data-entity="contents">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Matéria (ID)</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </section>
+
+        <section id="questions-section" class="admin-section">
+            <h2>Questões <button class="btn btn-primary btn-add" data-entity-type="questions"><i class="fas fa-plus"></i> Adicionar</button></h2> <div class="table-responsive">
+            <table class="admin-table" data-entity="questions">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Texto da Questão</th>
+                    <th>Conteúdo (ID)</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </section>
+
+        <section id="achievements-section" class="admin-section">
+            <h2>Conquistas <button class="btn btn-primary btn-add" data-entity-type="achievements"><i class="fas fa-plus"></i> Adicionar</button></h2> <div class="table-responsive">
+            <table class="admin-table" data-entity="achievements">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Pontos</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        </section>
+    </main>
+</div>
+
+<div id="crudModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3 id="modalTitle"></h3>
+        <form id="crudForm">
+            <input type="hidden" id="formId">
+            <input type="hidden" id="formEntity">
+
+            <div id="dynamicFormFields"></div>
+
+            <div class="modal-actions">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <button type="button" class="btn btn-secondary close-button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="../js/api.js"></script>
+<script src="../components/notifications.js"></script>
+<script src="../components/theme.js"></script>
+<script src="../components/menu.js"></script> <script src="../js/admin.js"></script> </body>
+</html>

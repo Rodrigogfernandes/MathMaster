@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Conquistas</title>
+    <link rel="stylesheet" href="../css/conquistas.css">
+
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="container header-content">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <span>MathMaster</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li><a href="dashboard.html">Módulos</a></li>
+                <li><a href="conquistas.html" class="active">Conquistas</a></li>
+                <li><a href="comunidade.html">Comunidade</a></li>
+                <li><a href="perfil.html">Meu Perfil</a></li> </ul>
+        </nav>
+        <div class="user-profile">
+            <div class="user-stats">
+                <div class="coins">
+                    <span>🪙</span>
+                    <span>0</span> </div>
+            </div>
+            <div class="avatar" onclick="openProfileMenu()">A</div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="page-title">
+        <div class="page-title-icon">🏆</div>
+        <h1>Suas Conquistas</h1>
+    </div>
+
+    <div class="achievement-stats">
+        <div class="stat-card">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Conquistas Desbloqueadas</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">0%</div>
+            <div class="stat-label">Taxa de Conclusão</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Pontos de Conquista</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Dias na Plataforma</div>
+        </div>
+    </div>
+
+    <div class="achievements-section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🌟</span>
+                <h2>Conquistas em Matemática</h2>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn active">Todas</button>
+                <button class="filter-btn" data-filter="unlocked">Desbloqueadas</button>
+                <button class="filter-btn" data-filter="locked">Bloqueadas</button>
+            </div>
+        </div>
+
+        <div class="achievements-grid">
+        </div>
+    </div>
+
+    <div class="milestones-section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🚀</span>
+                <h2>Marcos de Progresso</h2>
+            </div>
+        </div>
+
+        <div class="milestone-timeline">
+            <div class="timeline-line"></div>
+
+            <div class="milestone-item">
+                <div class="milestone-date">
+                    <span>10</span>
+                    <span>Mar</span>
+                </div>
+                <div class="milestone-content">
+                    <div class="milestone-title">
+                        <h3>Primeiros Passos</h3>
+                        <span class="milestone-badge">Concluído</span>
+                    </div>
+                    <p>Você completou seu primeiro módulo de matemática!</p>
+                    <div class="achievement-badges">
+                        <div class="badge-item">🔢</div>
+                        <div class="badge-item">π</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="milestone-item">
+                <div class="milestone-date">
+                    <span>15</span>
+                    <span>Mar</span>
+                </div>
+                <div class="milestone-content">
+                    <div class="milestone-title">
+                        <h3>Superando Desafios</h3>
+                        <span class="milestone-badge">Concluído</span>
+                    </div>
+                    <p>Você resolveu 50 exercícios em uma semana!</p>
+                    <div class="achievement-badges">
+                        <div class="badge-item">⚡</div>
+                        <div class="badge-item">🔥</div>
+                        <div class="badge-item">📚</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="milestone-item">
+                <div class="milestone-date">
+                    <span>18</span>
+                    <span>Mar</span>
+                </div>
+                <div class="milestone-content">
+                    <div class="milestone-title">
+                        <h3>Cálculo Avançado</h3>
+                        <span class="milestone-badge">Em Progresso</span>
+                    </div>
+                    <p>Complete o módulo de cálculo diferencial e integral.</p>
+                    <div class="achievement-badges">
+                        <div class="badge-item">∫</div>
+                        <div class="badge-item locked">📊</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="milestone-item">
+                <div class="milestone-date future">
+                    <span>25</span>
+                    <span>Mar</span>
+                </div>
+                <div class="milestone-content">
+                    <div class="milestone-title">
+                        <h3>Estatística e Probabilidade</h3>
+                        <span class="milestone-badge">Futuro</span>
+                    </div>
+                    <p>Domine os conceitos de estatística descritiva e probabilidade.</p>
+                    <div class="achievement-badges">
+                        <div class="badge-item locked">📊</div>
+                        <div class="badge-item locked">🎲</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ranking-section">
+        <div class="section-header">
+            <div class="section-title">
+                <span>🏅</span>
+                <h2>Ranking de Conquistas</h2>
+            </div>
+        </div>
+
+        <div class="ranking-tabs">
+            <div class="ranking-tab active" data-tab="global">Global</div>
+            <div class="ranking-tab" data-tab="friends">Amigos</div>
+            <div class="ranking-tab" data-tab="weekly">Semanal</div>
+        </div>
+
+        <div class="ranking-list">
+            <div class="ranking-item ranking-header">
+                <div>Rank</div>
+                <div>Usuário</div>
+                <div>Pontos</div>
+                <div class="completion-header">Conclusão</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../js/api.js"></script> <script src="../components/notifications.js"></script> <script src="../components/menu.js"></script> <script src="../components/theme.js"></script> <script src="../js/conquistas.js"></script> </body>
+
+</html>

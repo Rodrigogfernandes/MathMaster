@@ -1,58 +1,146 @@
-// Estado global da aplicação
+// Estado global da aplicação (dados iniciais mockados serão substituídos pelo backend)
 let gameState = {
     coins: 0,
-    dailyProgress: 0,
-    timeRemaining: 0,
+    dailyProgress: 0, // Mockado, pois o backend não tem essa lógica ainda
+    timeRemaining: 0, // Mockado
     currentTheme: 'light',
     user: {
-        name: 'Rodrigo',
-        streak: 5,
-        completedGoals: 2
+        name: 'Convidado', // Será substituído pelo nome do usuário do backend
+        id: null,
+        streak: 0, // Mockado
+        completedGoals: 0 // Mockado
     },
-    achievements: [
-        {
-            icon: '🏆',
-            title: 'Mestre das Derivadas',
-            description: 'Completou 10 exercícios sem erros',
-            unlocked: true
-        },
-        {
-            icon: '🔥',
-            title: 'Sequência de 5 dias',
-            description: 'Estudou por 5 dias consecutivos',
-            unlocked: false
-        },
-        {
-            icon: '⚡',
-            title: 'Velocista',
-            description: 'Resolveu 5 problemas em menos de 3 minutos',
-            unlocked: true
-        }
-    ],
-    topics: [
-        { name: 'Cálculo Integral', progress: 0, symbol: '∫', color: '#42a5f5' },
-        { name: 'Trigonometria', progress: 0, symbol: 'π', color: '#7e57c2' },
-        { name: 'Álgebra Avançada', progress: 0, symbol: 'x²', color: '#ef5350' },
-        { name: 'Estatística Aplicada', progress: 0, symbol: '📊', color: '#66bb6a' }
-    ]
+    achievements: [], // Virão do backend
+    topics: [] // Virão do backend (Subjects)
 };
+
+// Instância do sistema de notificações (garante que esteja disponível)
+// Certifique-se que notifications.js é carregado antes deste script.
+// A linha 'const notifications = new NotificationSystem();' já está no notifications.js.
+// Podemos usar window.showNotification diretamente ou acessar window.notifications.
+// Se window.notifications já existe, não precisa criar de novo aqui.
+// Para evitar duplicidade, vamos assumir que showNotification está disponível globalmente.
+// const notifications = new NotificationSystem(); // Remova esta linha se já está em notifications.js
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', function() {
     initializeApp();
     setupEventListeners();
-    updateProgressBars();
-    startDailyTimer();
+    // updateProgressBars(); // Desativar por enquanto, pois os tópicos virão do backend
+    // startDailyTimer();    // Desativar por enquanto, pois é lógica de progresso
 });
 
 // Inicializar aplicação
-function initializeApp() {
-    console.log('MathMaster iniciado!');
-    updateCoins();
-    updateDailyProgress();
-    loadAchievements();
-    loadTopics();
+async function initializeApp() {
+    console.log('MathMaster iniciado! Carregando dados do backend...');
+    await loadUserDataFromBackend(); // Carrega usuário logado
+    await loadSubjectsAndContents(); // Carrega módulos/matérias e seus conteúdos
+    await loadAchievements(); // Carrega conquistas
+    updateCoins(); // Atualiza moedas no header (que virão do backend)
+    // As outras funções (progresso diário, metas) serão implementadas em etapas futuras.
 }
+
+// Função para carregar dados do usuário logado do backend
+async function loadUserDataFromBackend() {
+    try {
+        const userResponse = await window.MathMasterAPI.User.getCurrentUser(); // Chama o endpoint /api/users/me
+        console.log('Resposta do backend para getCurrentUser:', userResponse); // Mantido para depuração
+
+        if (userResponse && userResponse.id) {
+            gameState.user.name = userResponse.name;
+            gameState.user.id = userResponse.id;
+            // O backend ainda não tem o campo 'coins' na entidade User.
+            // Vamos mockar um valor inicial ou pegar do local storage se o Rodrigo já tiver.
+            // Para o MVP, vamos assumir 0 ou que o userResponse.coins virá se o backend tiver.
+            gameState.coins = userResponse.coins || 0; // Se backend retornar coins, usa, senão 0.
+
+            // Atualiza o nome de usuário na mensagem de boas-vindas
+            const welcomeMessageHeading = document.getElementById('welcomeMessageHeading'); // Usando o novo ID
+            if (welcomeMessageHeading) {
+                welcomeMessageHeading.textContent = `Bem-vindo de volta, ${gameState.user.name.split(' ')[0]}!`; // Pega só o primeiro nome
+            } else {
+                console.warn('Elemento H1 com ID "welcomeMessageHeading" não encontrado!');
+            }
+
+            // Atualiza o avatar no header
+            const avatarElement = document.querySelector('header .user-profile .avatar');
+            if (avatarElement) {
+                avatarElement.textContent = gameState.user.name.charAt(0).toUpperCase();
+            } else {
+                console.warn('Elemento ".user-profile .avatar" não encontrado no DOM!');
+            }
+        } else {
+            console.warn('Nenhum usuário logado ou resposta inválida. Redirecionando para login.');
+            window.location.href = 'login.html'; // Redireciona para login
+        }
+    } catch (error) {
+        console.error('Erro ao carregar dados do usuário logado:', error);
+        // Usando a função global showNotification
+        if (typeof showNotification === 'function') {
+            showNotification('Não foi possível carregar seu perfil. Tente novamente.', 'error');
+        } else {
+            console.error('showNotification não está definida.');
+        }
+
+        // Se der erro de autenticação (ex: token expirado), redireciona para login
+        if (error.status === 401 || error.status === 403) {
+             window.location.href = 'login.html';
+        }
+    }
+}
+
+// Função para carregar matérias (Subjects) e seus conteúdos do backend
+async function loadSubjectsAndContents() {
+    try {
+        const subjects = await window.MathMasterAPI.Modules.getAllSubjects(); // GET /api/modules
+        console.log('Matérias recebidas do backend:', subjects); // Mantido para depuração
+
+        gameState.topics = subjects.map(subject => ({
+            id: subject.id,
+            name: subject.name,
+            description: subject.description,
+            symbol: getSubjectSymbol(subject.name), // Função auxiliar para ícones
+            progress: 0, // Mockado por enquanto, pois o backend não tem essa lógica ainda para o Subject
+            color: getSubjectColor(subject.name) // Função auxiliar para cores
+        }));
+        renderTopicsGrid(); // Renderiza os cards de tópicos/matérias
+    } catch (error) {
+        console.error('Erro ao carregar matérias:', error);
+        if (typeof showNotification === 'function') {
+            showNotification('Não foi possível carregar os módulos de estudo.', 'error');
+        } else {
+            console.error('showNotification não está definida.');
+        }
+    }
+}
+
+// Função para carregar conquistas do backend
+async function loadAchievements() {
+    try {
+        const achievements = await window.MathMasterAPI.Achievements.getAllAchievements(); // GET /api/achievements
+        console.log('Conquistas recebidas do backend:', achievements); // Mantido para depuração
+
+        gameState.achievements = achievements.map(ach => ({
+            // Importante: a entidade Achievement não tem campo 'icon' no backend.
+            // Para o MVP, vamos usar um ícone genérico ou mapear com base no título.
+            icon: '🏆', // Ícone genérico
+            title: ach.title,
+            description: ach.description,
+            unlocked: false // No MVP, assumimos que todas vêm como bloqueadas. A lógica de desbloqueio virá depois.
+        }));
+        renderAchievementsList(); // Renderiza a lista de conquistas
+    } catch (error) {
+        console.error('Erro ao carregar conquistas:', error);
+        if (typeof showNotification === 'function') {
+            showNotification('Não foi possível carregar as conquistas.', 'error');
+        } else {
+            console.error('showNotification não está definida.');
+        }
+    }
+}
+
+
+// Funções existentes (com pequenos ajustes para usar gameState.topics/achievements)
 
 // Configurar event listeners
 function setupEventListeners() {
@@ -61,95 +149,85 @@ function setupEventListeners() {
         link.addEventListener('click', handleNavigation);
     });
 
-    // Event listeners para cards de tópicos
-    document.querySelectorAll('.topic-card').forEach(card => {
-        card.addEventListener('click', handleTopicClick);
-        card.addEventListener('mouseenter', handleTopicHover);
-        card.addEventListener('mouseleave', handleTopicLeave);
-    });
-
-    // Event listeners para metas diárias
+    // Event listeners para metas diárias (ainda mockados)
     document.querySelectorAll('.goal-item').forEach(goal => {
         if (!goal.classList.contains('completed')) {
             goal.addEventListener('click', completeGoal);
         }
     });
 
-    // Event listeners para modal de lição
+    // Event listeners para modal de lição (se houver na página)
     document.addEventListener('keydown', handleKeyDown);
 }
 
-// Navegação
+// Navegação (mantida, pois é para navegação do frontend)
 function handleNavigation(event) {
-    event.preventDefault();
+    event.preventDefault(); // Previne o comportamento padrão do link
     const targetPage = event.target.getAttribute('href');
-    
+
     // Remove active class de todos os links
     document.querySelectorAll('nav a').forEach(link => {
         link.classList.remove('active');
     });
-    
+
     // Adiciona active class ao link clicado
     event.target.classList.add('active');
-    
-    // Simula navegação (em uma aplicação real, seria roteamento)
-    showNotification(`Navegando para ${targetPage}`, 'info');
+
+    window.location.href = targetPage; // Redireciona de fato
 }
 
 // Atualizar moedas
 function updateCoins() {
-    const coinElement = document.querySelector('.coins span:last-child');
-    if (coinElement) {
-        coinElement.textContent = gameState.coins;
+    const userCoinsDisplay = document.getElementById('userCoinsDisplay'); // Usando o novo ID
+    if (userCoinsDisplay) {
+        userCoinsDisplay.textContent = gameState.coins;
     }
 }
 
-// Adicionar moedas
+// Adicionar moedas (simulado, pois não temos XP/Moedas no backend User ainda)
 function addCoins(amount) {
     gameState.coins += amount;
     updateCoins();
     showCoinAnimation(amount);
 }
 
-// Animação de moedas
+// Animação de moedas (simulado)
 function showCoinAnimation(amount) {
-    const coinElement = document.querySelector('.coins');
+    const coinsContainer = document.querySelector('.coins');
+    if (!coinsContainer) return;
+
     const animation = document.createElement('div');
     animation.className = 'coin-float';
     animation.textContent = `+${amount}`;
-    animation.style.cssText = `
-        position: absolute;
-        color: #ffd700;
-        font-weight: bold;
-        font-size: 18px;
-        animation: floatUp 2s ease-out forwards;
-        pointer-events: none;
-        z-index: 1000;
-    `;
-    
-    coinElement.appendChild(animation);
-    
+
+    // Posiciona a animação perto do elemento de moedas
+    const rect = coinsContainer.getBoundingClientRect();
+    animation.style.left = `${rect.left + rect.width / 2}px`;
+    animation.style.top = `${rect.top + window.scrollY}px`;
+
+    document.body.appendChild(animation);
+
     setTimeout(() => {
         animation.remove();
-    }, 2000);
+    }, 2000); // Duração da animação
 }
 
-// Atualizar progresso diário
+// Atualizar progresso diário (ainda mockado)
 function updateDailyProgress() {
     const progressBar = document.querySelector('.progress-bar');
     const progressInfo = document.querySelectorAll('.progress-info span');
-    
+
     if (progressBar) {
         progressBar.style.width = `${gameState.dailyProgress}%`;
     }
-    
+
     if (progressInfo.length >= 2) {
         progressInfo[0].textContent = `${gameState.dailyProgress}% da meta diária`;
         progressInfo[1].textContent = `${gameState.timeRemaining} minutos restantes`;
     }
 }
 
-// Timer diário
+// Timer diário (ainda mockado)
 function startDailyTimer() {
     setInterval(() => {
         if (gameState.timeRemaining > 0) {
@@ -159,209 +237,55 @@ function startDailyTimer() {
     }, 60000); // Atualiza a cada minuto
 }
 
-// Atualizar barras de progresso dos tópicos
-function updateProgressBars() {
-    const topicCards = document.querySelectorAll('.topic-card');
-    topicCards.forEach((card, index) => {
-        const progressBar = card.querySelector('.topic-progress-bar');
-        if (progressBar && gameState.topics[index]) {
-            progressBar.style.width = `${gameState.topics[index].progress}%`;
-        }
+// Renderizar os cards de tópicos/matérias (Subjects)
+function renderTopicsGrid() {
+    const topicsGridContainer = document.querySelector('.topics-grid');
+    if (!topicsGridContainer) return;
+
+    topicsGridContainer.innerHTML = ''; // Limpa os cards mockados no HTML
+
+    gameState.topics.forEach(topic => {
+        const topicCard = document.createElement('div');
+        topicCard.className = 'topic-card';
+        // Adiciona um data-id para identificar o módulo (Subject) no backend
+        topicCard.dataset.moduleId = topic.id;
+
+        // Use a cor e o símbolo dinamicamente
+        topicCard.innerHTML = `
+            <div class="topic-img" style="background-color: ${topic.color};">
+                ${topic.symbol}
+            </div>
+            <div class="topic-content">
+                <h3>${topic.name}</h3>
+                <p>${topic.description}</p>
+                <div class="topic-progress">
+                    <div class="topic-progress-bar" style="width: ${topic.progress}%"></div>
+                </div>
+            </div>
+        `;
+        // Adiciona o evento de clique diretamente no card renderizado
+        topicCard.addEventListener('click', () => handleTopicClick(topic.id, topic.name));
+        topicsGridContainer.appendChild(topicCard);
     });
 }
 
-// Manipular clique em tópicos
-function handleTopicClick(event) {
-    const card = event.currentTarget;
-    const topicTitle = card.querySelector('h3').textContent;
-    
-    // Adiciona efeito visual
-    card.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-        card.style.transform = 'scale(1)';
-    }, 150);
-    
-    // Abre lição se for Cálculo Integral
-    if (topicTitle === 'Cálculo Integral') {
-        openLesson();
-    } else {
-        showNotification(`Abrindo ${topicTitle}...`, 'info');
-    }
+
+// Manipular clique em tópicos (agora com ID real)
+function handleTopicClick(moduleId, topicName) {
+    // Redireciona para a página do módulo, passando o ID do módulo real.
+    // A página modulo.html precisará ser adaptada para usar este ID.
+    window.location.href = `modulo.html?moduleId=${moduleId}`;
+    // showNotification(`Abrindo ${topicName}...`, 'info'); // Pode ser removido
 }
 
-// Hover effects para tópicos
-function handleTopicHover(event) {
-    const card = event.currentTarget;
-    card.style.transform = 'translateY(-5px)';
-    card.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-}
 
-function handleTopicLeave(event) {
-    const card = event.currentTarget;
-    card.style.transform = 'translateY(0)';
-    card.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-}
+// Renderizar a lista de conquistas (Achievements)
+function renderAchievementsList() {
+    const achievementListContainer = document.querySelector('.achievement-list');
+    if (!achievementListContainer) return;
 
-// Completar meta diária
-function completeGoal(event) {
-    const goalItem = event.currentTarget;
-    const rewardText = goalItem.querySelector('.goal-reward').textContent;
-    const coinAmount = parseInt(rewardText.match(/\d+/)[0]);
-    
-    goalItem.classList.add('completed');
-    goalItem.querySelector('.goal-checkbox').textContent = '✓';
-    
-    addCoins(coinAmount);
-    gameState.user.completedGoals++;
-    
-    // Atualiza progresso diário
-    gameState.dailyProgress = Math.min(100, gameState.dailyProgress + 10);
-    updateDailyProgress();
-    
-    showNotification('Meta completada! 🎉', 'success');
-}
+    achievementListContainer.innerHTML = ''; // Limpa as conquistas mockadas no HTML
 
-// Abrir lição
-function openLesson() {
-    const modal = document.getElementById('lessonModal');
-    modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-    
-    // Anima a abertura
-    setTimeout(() => {
-        modal.classList.add('active');
-    }, 10);
-}
-
-// Fechar lição
-function closeLesson() {
-    const modal = document.getElementById('lessonModal');
-    modal.classList.remove('active');
-    
-    setTimeout(() => {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }, 300);
-}
-
-// Mostrar resposta correta
-function showCorrectAnswer(event) {
-    const correctFeedback = document.getElementById('correctFeedback');
-    const wrongFeedback = document.getElementById('wrongFeedback');
-    const optionBtns = document.querySelectorAll('.option-btn');
-
-    // Destaca a resposta correta
-    event.target.classList.add('correct');
-
-    // Desabilita todos os botões
-    optionBtns.forEach(btn => {
-        btn.disabled = true;
-        if (btn !== event.target) {
-            btn.classList.add('disabled');
-        }
-    });
-
-    // Mostra feedback
-    if (correctFeedback) correctFeedback.style.display = 'block';
-    if (wrongFeedback) wrongFeedback.style.display = 'none';
-
-    // Adiciona moedas
-    addCoins(15);
-
-    // Mostra animação de recompensa
-    setTimeout(() => {
-        showRewardAnimation();
-    }, 1000);
-}
-
-// Mostrar resposta incorreta
-function showWrongAnswer(event) {
-    const wrongFeedback = document.getElementById('wrongFeedback');
-    const correctFeedback = document.getElementById('correctFeedback');
-    
-    event.target.classList.add('wrong');
-    wrongFeedback.style.display = 'block';
-    correctFeedback.style.display = 'none';
-    
-    setTimeout(() => {
-        event.target.classList.remove('wrong');
-        wrongFeedback.style.display = 'none';
-    }, 3000);
-}
-
-// Configurar opções de resposta
-function setupAnswerOptions() {
-    const optionBtns = document.querySelectorAll('.option-btn');
-    optionBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function(event) {
-            if (index === 2) { // Resposta correta (14)
-                showCorrectAnswer(event);
-            } else {
-                showWrongAnswer(event);
-            }
-        });
-    });
-}
-
-// Animação de recompensa
-function showRewardAnimation() {
-    const rewardAnimation = document.getElementById('rewardAnimation');
-    rewardAnimation.style.display = 'flex';
-    
-    setTimeout(() => {
-        rewardAnimation.classList.add('show');
-    }, 10);
-    
-    setTimeout(() => {
-        rewardAnimation.classList.remove('show');
-        setTimeout(() => {
-            rewardAnimation.style.display = 'none';
-        }, 300);
-    }, 3000);
-}
-
-// Manipulação de teclado
-function handleKeyDown(event) {
-    if (event.key === 'Escape') {
-        closeLesson();
-    }
-}
-
-// Controles de áudio da lição
-function setupAudioControls() {
-    const playBtn = document.querySelector('.play-btn');
-    const volumeControl = document.querySelector('.volume-control');
-    const volumeBar = document.querySelector('.volume-bar');
-    const volumeLevel = document.querySelector('.volume-level');
-    
-    let isPlaying = false;
-    let volume = 50;
-    
-    if (playBtn) {
-        playBtn.addEventListener('click', function() {
-            isPlaying = !isPlaying;
-            this.textContent = isPlaying ? '⏸' : '▶';
-            showNotification(isPlaying ? 'Reproduzindo...' : 'Pausado', 'info');
-        });
-    }
-    
-    if (volumeBar) {
-        volumeBar.addEventListener('click', function(event) {
-            const rect = this.getBoundingClientRect();
-            const percent = ((event.clientX - rect.left) / rect.width) * 100;
-            volume = Math.max(0, Math.min(100, percent));
-            volumeLevel.style.width = `${volume}%`;
-        });
-    }
-}
-
-// Carregamento de conquistas
-function loadAchievements() {
-    const achievementList = document.querySelector('.achievement-list');
-    if (!achievementList) return;
-    
-    achievementList.innerHTML = '';
-    
     gameState.achievements.forEach(achievement => {
         const achievementEl = document.createElement('div');
         achievementEl.className = 'achievement';
@@ -372,101 +296,117 @@ function loadAchievements() {
                 <p>${achievement.description}</p>
             </div>
         `;
-        achievementList.appendChild(achievementEl);
+        achievementListContainer.appendChild(achievementEl);
     });
 }
 
-// Carregamento de tópicos
-function loadTopics() {
-    const topicsGrid = document.querySelector('.topics-grid');
-    if (!topicsGrid) return;
-    
-    const topicCards = topicsGrid.querySelectorAll('.topic-card');
-    topicCards.forEach((card, index) => {
-        if (gameState.topics[index]) {
-            const topic = gameState.topics[index];
-            const progressBar = card.querySelector('.topic-progress-bar');
-            if (progressBar) {
-                progressBar.style.width = `${topic.progress}%`;
-            }
-        }
-    });
-}
 
-// Animações CSS dinâmicas
-function addAnimationStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes floatUp {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-30px); opacity: 0; }
-        }
-        
-        .option-btn.correct {
-            background-color: #4caf50 !important;
-            color: white !important;
-        }
-        
-        .option-btn.wrong {
-            background-color: #f44336 !important;
-            color: white !important;
-        }
-        
-        .option-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        
-        .lesson-modal.active .modal-content2 {
-            transform: scale(1);
-            opacity: 1;
-        }
-        
-        .reward-animation.show {
-            opacity: 1;
-            transform: scale(1);
-        }
-    `;
-    document.head.appendChild(style);
-}
+// Completar meta diária (ainda mockado)
+function completeGoal(event) {
+    const goalItem = event.currentTarget;
+    if (goalItem.classList.contains('completed')) return; // Evita completar de novo
 
-// Inicializar controles de áudio e estilos quando a página carregar
-document.addEventListener('DOMContentLoaded', function() {
-    setupAudioControls();
-    setupAnswerOptions();
-    addAnimationStyles();
-});
+    const rewardText = goalItem.querySelector('.goal-reward').textContent;
+    const coinAmount = parseInt(rewardText.match(/\d+/)[0]);
 
-// Função para salvar progresso (simulado)
-function saveProgress() {
-    const progressData = {
-        coins: gameState.coins,
-        dailyProgress: gameState.dailyProgress,
-        completedGoals: gameState.user.completedGoals,
-        topics: gameState.topics
-    };
-    
-    localStorage.setItem('mathmaster_progress', JSON.stringify(progressData));
-    showNotification('Progresso salvo!', 'success');
-}
+    goalItem.classList.add('completed');
+    goalItem.querySelector('.goal-checkbox').textContent = '✓';
 
-// Função para carregar progresso
-function loadProgress() {
-    const savedProgress = localStorage.getItem('mathmaster_progress');
-    if (savedProgress) {
-        const progressData = JSON.parse(savedProgress);
-        gameState.coins = progressData.coins || gameState.coins;
-        gameState.dailyProgress = progressData.dailyProgress || gameState.dailyProgress;
-        gameState.user.completedGoals = progressData.completedGoals || gameState.user.completedGoals;
-        if (progressData.topics) {
-            gameState.topics = progressData.topics;
-        }
+    addCoins(coinAmount);
+    gameState.user.completedGoals++;
+
+    gameState.dailyProgress = Math.min(100, gameState.dailyProgress + 10);
+    updateDailyProgress();
+
+    if (typeof showNotification === 'function') {
+        showNotification('Meta completada! 🎉', 'success');
+    } else {
+        console.warn('showNotification não está definida, não é possível exibir notificação.');
     }
 }
 
-// Salvar progresso automaticamente a cada 30 segundos
-setInterval(saveProgress, 30000);
 
-// Carregar progresso ao inicializar
-document.addEventListener('DOMContentLoaded', loadProgress);
+// Mapeamento de símbolo e cor para matérias (pode vir do backend futuramente)
+function getSubjectSymbol(subjectName) {
+    switch (subjectName) {
+        case 'Álgebra Básica': return 'x²';
+        case 'Geometria': return '△';
+        case 'Cálculo': return '∫';
+        case 'Estatística': return '📊';
+        default: return '📚';
+    }
+}
 
+function getSubjectColor(subjectName) {
+    switch (subjectName) {
+        case 'Álgebra Básica': return '#ef5350';
+        case 'Geometria': return '#66bb6a';
+        case 'Cálculo': return '#6290c8';
+        case 'Estatística': return '#7e57c2';
+        default: return '#cccccc';
+    }
+}
+
+// Funções para controle de lição (modal) - como está no HTML
+function openLesson() {
+    const modal = document.getElementById('lessonModal');
+    if(modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => modal.classList.add('active'), 10);
+    }
+}
+
+function closeLesson() {
+    const modal = document.getElementById('lessonModal');
+    if(modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }, 300);
+    }
+}
+
+function showCorrectAnswer(event) {
+    if (typeof showNotification === 'function') {
+        showNotification('Correto! 🎉 Você ganhou 15 moedas!', 'success');
+    } else {
+        console.warn('showNotification não está definida.');
+    }
+    addCoins(15);
+    // Lógica de feedback visual no HTML
+}
+
+function showWrongAnswer(event) {
+    if (typeof showNotification === 'function') {
+        showNotification('Incorreto. Tente novamente!', 'error');
+    } else {
+        console.warn('showNotification não está definida.');
+    }
+    // Lógica de feedback visual no HTML
+}
+
+// Animação de recompensa (simulada)
+function showRewardAnimation() {
+    const rewardAnimation = document.getElementById('rewardAnimation');
+    if (rewardAnimation) {
+        rewardAnimation.style.display = 'flex';
+        setTimeout(() => rewardAnimation.classList.add('show'), 10);
+        setTimeout(() => {
+            rewardAnimation.classList.remove('show');
+            setTimeout(() => rewardAnimation.style.display = 'none', 300);
+        }, 3000);
+    }
+}
+
+// Manipulação de teclado (para fechar modais)
+function handleKeyDown(event) {
+    if (event.key === 'Escape') {
+        closeLesson();
+    }
+}
+
+// Funções de tema e notificações que estão em components/
+// Não precisam ser repetidas aqui se já estão sendo importadas via <script src>
+// showNotification é exposta globalmente pelo notifications.js

@@ -1,7 +1,6 @@
 package br.com.mathmaster.backend.config.security;
 
-// Verifique se os imports para User e UserRepository apontam para o pacote novo
-import br.com.mathmaster.backend.model.User;
+import br.com.mathmaster.backend.model.User; // Importa a entidade User
 import br.com.mathmaster.backend.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,10 +23,13 @@ public class JpaUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o email: " + email));
 
         // Construímos e retornamos o objeto UserDetails que o Spring Security entende
+        // Agora, usamos user.getRole() para definir os papéis do usuário dinamicamente.
+        // O papel deve ser prefixado com "ROLE_" pelo Spring Security internamente,
+        // mas aqui basta passar o nome do papel (ex: "ADMIN", "USER").
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .roles("USER")
+                .roles(user.getRole()) // ALTERADO: Agora pega o papel da entidade User
                 .build();
     }
 }

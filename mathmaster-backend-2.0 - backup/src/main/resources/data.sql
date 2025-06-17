@@ -1,10 +1,3 @@
--- =========== USUÁRIOS ===========
--- Senha para admin@mathmaster.com é "adminpass"
-INSERT INTO users (name, email, password) VALUES ('Admin MathMaster', 'admin@mathmaster.com', '$2a$10$8.4I4gqWd05161A72u492.eAXl3B9h3E6cgzAS2j6O5k5yY3jfpjC');
--- Senha para rodrigo@amigo.com é "userpass"
-INSERT INTO users (name, email, password) VALUES ('Rodrigo Fernandes', 'rodrigo@amigo.com', '$2a$10$UaFq5sT6h2pA8b2.z1nC5uJ2bK1aI8aJ4eP2s3O5b7Y9g1V3oE5a');
-
-
 -- =========== MATÉRIAS (SUBJECTS) ===========
 INSERT INTO subject (name, description) VALUES ('Álgebra Básica', 'Domine os fundamentos da álgebra e resolva equações com confiança.');
 INSERT INTO subject (name, description) VALUES ('Geometria', 'Explore as formas, o espaço e as propriedades que definem o mundo ao nosso redor.');

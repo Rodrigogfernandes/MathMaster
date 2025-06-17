@@ -13,27 +13,24 @@ public class Question {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String questionText; // O enunciado da questão
+    private String questionText;
 
-    // Esta é uma forma inteligente do JPA de armazenar uma lista de Strings.
-    // Ele criará uma tabela separada (question_options) para guardar as alternativas.
     @ElementCollection
     @CollectionTable(name = "question_options", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "option_text")
-    private List<String> options = new ArrayList<>(); // As alternativas (ex: "A) 2", "B) 4", "C) 6")
+    private List<String> options = new ArrayList<>();
 
-    private String correctAnswer; // A resposta correta (ex: "B) 4")
+    private String correctAnswer;
 
-    private String type = "MULTIPLE_CHOICE"; // Tipo da questão, conforme seu checklist
+    private String type = "MULTIPLE_CHOICE";
 
-    // --- Relacionamento com Content ---
     @ManyToOne
     @JoinColumn(name = "content_id")
-    @JsonIgnore
+    @JsonIgnore // Mantém o objeto Content ignorado
     private Content content;
 
 
-    // --- GETTERS E SETTERS MANUAIS ---
+    // GETTERS E SETTERS MANUAIS
 
     public Long getId() {
         return id;
@@ -81,5 +78,13 @@ public class Question {
 
     public void setContent(Content content) {
         this.content = content;
+    }
+
+    /**
+     * NOVO: Getter para expor apenas o ID do conteúdo (Content) pai.
+     * @return O ID do Content pai, ou null se não houver Content.
+     */
+    public Long getContentId() { // NOVO GETTER
+        return content != null ? content.getId() : null;
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-    // Método para encontrar todas as questões de um conteúdo específico
-    List<Question> findByContentId(Long contentId);
+    // ALTERADO: A barra baixa "_" indica para o Spring Data JPA que ele deve "navegar"
+    // para a propriedade 'content' (o objeto relacionado) e então acessar o 'id' desse objeto.
+    List<Question> findByContent_Id(Long contentId); // CORRIGIDO
 }

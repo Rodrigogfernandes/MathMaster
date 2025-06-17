@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MathMaster - Aprenda Matemática de Forma Divertida</title>
+    <link rel="stylesheet" href="../css/index.css">
+
+</head>
+
+<body>
+<header>
+    <div class="container header-content">
+        <div class="logo">
+            <div class="logo-icon">M</div>
+            <span>MathMaster</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Início</a></li>
+                <li><a href="dashboard.html">Módulos</a></li>
+                <li><a href="conquistas.html">Conquistas</a></li>
+                <li><a href="comunidade.html">Comunidade</a></li>
+                <li><a href="perfil.html">Meu Perfil</a></li>
+            </ul>
+        </nav>
+        <div class="user-profile">
+            <div class="user-stats">
+                <div class="coins">
+                    <span>🪙</span>
+                    <span id="userCoinsDisplay">0</span> </div>
+            </div>
+            <div class="avatar" onclick="openProfileMenu()">A</div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="main-content">
+        <div class="dashboard">
+            <div class="welcome-message">
+                <h1 id="welcomeMessageHeading">Bem-vindo de volta!</h1>
+                <p>Continue seu aprendizado em matemática. Hoje é um ótimo dia para aprender algo novo!</p>
+            </div>
+
+            <div class="progress-section">
+                <h2>Progresso Diário</h2>
+                <div class="daily-progress">
+                    <div class="progress-bar"></div>
+                </div>
+                <div class="progress-info">
+                    <span>65% da meta diária</span>
+                    <span>35 minutos restantes</span>
+                </div>
+            </div>
+
+            <h2>Continue Aprendendo</h2>
+            <div class="topics-grid">
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-widget">
+                <h2>Conquistas Recentes</h2>
+                <div class="achievement-list">
+                </div>
+            </div>
+
+            <div class="sidebar-widget">
+                <h2>Metas Diárias</h2>
+                <div class="daily-goals-list">
+                    <div class="goal-item completed">
+                        <div class="goal-checkbox">✓</div>
+                        <span class="goal-text">Completar 10 minutos de estudo</span>
+                        <span class="goal-reward">+10 🪙</span>
+                    </div>
+                    <div class="goal-item completed">
+                        <div class="goal-checkbox">✓</div>
+                        <span class="goal-text">Resolver 5 problemas</span>
+                        <span class="goal-reward">+15 🪙</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox"></div>
+                        <span class="goal-text">Completar 1 lição inteira</span>
+                        <span class="goal-reward">+25 🪙</span>
+                    </div>
+                    <div class="goal-item">
+                        <div class="goal-checkbox"></div>
+                        <span class="goal-text">Revisar um conceito anterior</span>
+                        <span class="goal-reward">+20 🪙</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lesson-modal" id="lessonModal">
+    <div class="modal-content2">
+        <button class="close-modal" onclick="closeLesson()">×</button>
+        <div class="lesson-header">
+            <h2>Integrais Definidas</h2>
+            <p>Aprenda a calcular a área sob uma curva usando integrais definidas.</p>
+        </div>
+        <div class="practice-section">
+            <div class="practice-header">
+                <h3>Pratique o Conceito</h3>
+                <span>🪙 +15 moedas por resposta correta</span>
+            </div>
+            <div class="practice-problem">
+                <p>Calcule a integral definida:</p>
+                <div class="math-expression">∫<sub>0</sub><sup>2</sup> (3x² + 2) dx</div>
+            </div>
+            <div class="options-grid">
+                <button class="option-btn">10</button>
+                <button class="option-btn">12</button>
+                <button class="option-btn" onclick="showCorrectAnswer(event)">14</button>
+                <button class="option-btn">16</button>
+            </div>
+            <div class="feedback-message correct" id="correctFeedback">
+                <h3>Correto! 🎉</h3>
+                <p>Excelente trabalho! Você ganhou 15 moedas!</p>
+                <p>F(x) = x³ + 2x, então F(2) - F(0) = (8 + 4) - 0 = 12 + 2 = 14</p>
+            </div>
+            <div class="feedback-message wrong" id="wrongFeedback">
+                <h3>Incorreto</h3>
+                <p>Tente novamente! Dica: Primeiro encontre a primitiva de 3x² + 2.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="reward-animation" id="rewardAnimation">
+    <div class="reward-icon">🏆</div>
+    <h2>Parabéns!</h2>
+    <p>Você ganhou 15 moedas!</p>
+</div>
+
+<div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌓</div>
+
+<script src="../js/api.js"></script> <script src="../components/notifications.js"></script> <script src="../components/menu.js"></script> <script src="../components/theme.js"></script> <script src="../js/index.js"></script> </body>
+
+</html>

@@ -1,0 +1,398 @@
+/* MathMaster/css/admin.css */
+
+:root {
+    --primary: #4a6fa5;
+    --secondary: #6290c8;
+    --accent: #ffcd38;
+    --text: #333333;
+    --light-bg: #f5f7fa;
+    --white: #ffffff;
+    --success: #4caf50;
+    --error: #f44336;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --border-color: #e0e0e0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.admin-header {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 15px 0;
+    box-shadow: var(--shadow);
+}
+
+.admin-header .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.admin-header .logo-icon {
+    background-color: var(--accent);
+    color: var(--primary);
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.admin-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.admin-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.admin-nav a:hover {
+    color: var(--accent);
+}
+
+/* Main Container */
+.admin-container {
+    display: flex;
+    margin-top: 20px;
+    padding: 0 20px;
+    gap: 20px;
+}
+
+/* Sidebar */
+.admin-sidebar {
+    flex: 0 0 220px; /* Largura fixa */
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 20px;
+    min-height: calc(100vh - 100px); /* Ajusta altura com base no header */
+}
+
+.admin-sidebar h2 {
+    color: var(--primary);
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+}
+
+.sidebar-menu .menu-item:hover {
+    background-color: var(--light-bg);
+    color: var(--primary);
+}
+
+.sidebar-menu .menu-item.active {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.sidebar-menu .menu-item.active i {
+    color: var(--accent);
+}
+
+.sidebar-menu .menu-item i {
+    font-size: 16px;
+    color: var(--secondary); /* Cor padrão do ícone */
+}
+
+/* Main Content Area */
+.admin-main-content {
+    flex: 1;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+}
+
+.admin-section {
+    display: none; /* Esconde todas as seções por padrão, JS mostrará a ativa */
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.admin-section h2 {
+    color: var(--primary);
+    font-size: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary);
+}
+
+.btn-danger {
+    background-color: var(--error);
+    color: var(--white);
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-secondary {
+    background-color: var(--light-bg);
+    color: var(--primary);
+    border: 1px solid var(--border-color);
+}
+.btn-secondary:hover {
+    background-color: var(--border-color);
+}
+
+.btn-add {
+    margin-left: auto;
+}
+
+/* Table Styles */
+.table-responsive {
+    overflow-x: auto; /* Permite scroll horizontal em tabelas grandes */
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: left;
+}
+
+.admin-table th {
+    background-color: var(--light-bg);
+    color: var(--primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+
+.admin-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start; /* Alinha à esquerda */
+}
+
+/* Modals */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--white);
+    margin: auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.modal-content .close-button {
+    color: #aaa;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content .close-button:hover,
+.modal-content .close-button:focus {
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modalTitle {
+    color: var(--primary);
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.modal-content form .form-group {
+    margin-bottom: 15px;
+}
+
+.modal-content form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 14px;
+}
+
+.modal-content form input[type="text"],
+.modal-content form input[type="email"],
+.modal-content form input[type="password"],
+.modal-content form textarea,
+.modal-content form select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.modal-content form input:focus,
+.modal-content form textarea:focus,
+.modal-content form select:focus {
+    border-color: var(--secondary);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(98, 144, 200, 0.2);
+}
+
+.modal-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Notificações (podem ser globais via components/notifications.js) */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background: var(--success);
+    color: var(--white);
+}
+
+.notification.error {
+    background: var(--error);
+    color: var(--white);
+}
+
+.notification.info {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+        padding: 0 10px;
+    }
+    .admin-sidebar {
+        flex: none;
+        width: 100%;
+        min-height: auto;
+        padding: 15px;
+    }
+    .admin-main-content {
+        padding: 15px;
+    }
+    .admin-table th,
+    .admin-table td {
+        padding: 8px 10px;
+    }
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { /* Esconde coluna de descrição em telas pequenas */
+        display: none;
+    }
+}
