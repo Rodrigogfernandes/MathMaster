@@ -475,6 +475,9 @@ Este projeto está licenciado sob a licença MIT. Consulte o arquivo `LICENSE` p
 Este projeto foi desenvolvido por:
 
 * **Rodrigo**
+  * Email: rodrigo.guedes.g@gmail.com
+  * Telefone: +55 83 999251636
+  * Endereço: João Pessoa - PB
 * **Jônathas Felipe**
   * Email: jfelipe2742@gmail.com
   * Telefone: +55 83 98690-2116
