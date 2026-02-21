@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Já ganhamos métodos como save(), findById(), findAll(), deleteById(), etc.
     // Adicionar este método DENTRO da interface UserRepository
     Optional<User> findByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

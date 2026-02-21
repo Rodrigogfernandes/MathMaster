@@ -17,6 +17,12 @@ public class User {
 
     private String password;
 
+    @Lob
+    private String avatarUrl;
+
+    @Lob
+    private String coverUrl;
+
     // GETTERS MANUAIS
     public Long getId() {
         return id;
@@ -34,6 +40,14 @@ public class User {
         return password;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
     // SETTERS MANUAIS
     public void setId(Long id) {
         this.id = id;
@@ -49,5 +63,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 }

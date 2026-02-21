@@ -1,9 +1,11 @@
-// Configuração base da API
-const API_BASE_URL = '/api';
+// Configuração base da API (backend Spring Boot em desenvolvimento)
+const API_BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:8080/api'
+    : '/api';
 
 // Função genérica para fazer requisições à API
 async function fetchAPI(endpoint, options = {}) {
-    const token = localStorage.getItem('token');
+    const token = (typeof AuthStorage !== 'undefined' ? AuthStorage.getToken() : null) || localStorage.getItem('token');
     const defaultHeaders = {
         'Content-Type': 'application/json',
         ...(token && { 'Authorization': `Bearer ${token}` })
@@ -18,8 +20,11 @@ async function fetchAPI(endpoint, options = {}) {
     });
 
     if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erro na requisição');
+        let errorData = {};
+        try {
+            errorData = await response.json();
+        } catch (_) {}
+        throw new Error(errorData.message || errorData.error || 'Erro na requisição');
     }
 
     return response.json();
@@ -63,13 +68,13 @@ const UserAPI = {
         });
     },
 
-    // Dados do usuário
+    // Dados do usuário (backend: GET /api/users/me)
     getUserData: async () => {
-        return fetchAPI('/user/profile');
+        return fetchAPI('/users/me');
     },
 
     updateUserData: async (userData) => {
-        return fetchAPI('/user/profile', {
+        return fetchAPI('/users/me', {
             method: 'PUT',
             body: JSON.stringify(userData)
         });

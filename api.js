@@ -5,17 +5,21 @@
  * gerenciando autenticação, requisições e manipulação de respostas.
  */
 
-// URL base da API
-const API_URL = window.location.hostname === 'localhost' 
-  ? 'http://localhost:8080/api' 
+// URL base da API (backend Spring Boot)
+const API_URL = window.location.hostname === 'localhost'
+  ? 'http://localhost:8080/api'
   : '/api';
 
-// Configurações padrão para requisições fetch
-const defaultOptions = {
-  headers: {
+function getDefaultHeaders() {
+  const token = (typeof AuthStorage !== 'undefined' ? AuthStorage.getToken() : null) || localStorage.getItem('token');
+  return {
     'Content-Type': 'application/json',
-  },
-  credentials: 'include' // Para permitir o envio de cookies
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  };
+}
+
+const defaultOptions = {
+  credentials: 'include'
 };
 
 /**
@@ -27,28 +31,32 @@ const defaultOptions = {
 async function fetchAPI(endpoint, options = {}) {
   const url = `${API_URL}${endpoint}`;
   
-  // Mesclar opções padrão com as fornecidas
   const fetchOptions = {
     ...defaultOptions,
     ...options,
     headers: {
-      ...defaultOptions.headers,
+      ...getDefaultHeaders(),
       ...options.headers
     }
   };
-  
+
   try {
     const response = await fetch(url, fetchOptions);
-    const data = await response.json();
-    
-    // Se a resposta não for bem-sucedida, lançar erro
+    let data;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = {};
+    }
+
     if (!response.ok) {
-      const error = new Error(data.error || 'Erro na requisição');
+      const error = new Error(data.message || data.error || 'Erro na requisição');
       error.status = response.status;
       error.data = data;
       throw error;
     }
-    
+
     return data;
   } catch (error) {
     console.error('Erro na requisição:', error);
@@ -92,11 +100,11 @@ async function logout() {
 }
 
 /**
- * Obter dados do usuário atual
- * @returns {Promise<Object>} - Dados do usuário
+ * Obter dados do usuário atual (GET /api/users/me)
+ * @returns {Promise<Object>} - Dados do usuário { id, name, email }
  */
 async function getCurrentUser() {
-  return fetchAPI('/auth/me');
+  return fetchAPI('/users/me');
 }
 
 /**
@@ -682,6 +690,63 @@ async function clearAllNotifications() {
   });
 }
 
+// Expor funções para uso global (deve existir antes do módulo realtime)
+window.api = {
+  register,
+  login,
+  logout,
+  getCurrentUser,
+  updateUserDetails,
+  updatePassword,
+  forgotPassword,
+  resetPassword,
+  getModules,
+  getModule,
+  startModule,
+  checkAnswer,
+  getModuleProgress,
+  getModuleStats,
+  getModuleExercises,
+  createModule,
+  updateModule,
+  deleteModule,
+  getOverallProgress,
+  getDetailedModuleProgress,
+  getProgressStats,
+  completeExercise,
+  updateTopicProgress,
+  getAchievements,
+  getAchievement,
+  getUserAchievements,
+  checkAchievements,
+  createAchievement,
+  updateAchievement,
+  deleteAchievement,
+  awardAchievement,
+  getPosts,
+  getPinnedPosts,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+  addComment,
+  updateComment,
+  deleteComment,
+  likePost,
+  unlikePost,
+  likeComment,
+  unlikeComment,
+  markSolved,
+  getUserNotifications,
+  markNotificationAsRead,
+  markAllNotificationsAsRead,
+  deleteNotification,
+  clearAllNotifications,
+  getUsers,
+  getLeaderboard,
+  getUserStats
+};
+
 /**
  * Módulo para comunicação em tempo real com o servidor via Socket.io
  */
@@ -780,13 +845,11 @@ async function clearAllNotifications() {
    */
   async function authenticateCurrentUser() {
     if (!isConnected || !socket) return;
-    
+
     try {
-      // Obter usuário atual
-      const userResponse = await window.api.getCurrentUser();
-      
-      if (userResponse.success && userResponse.data) {
-        userId = userResponse.data._id;
+      const user = await window.api.getCurrentUser();
+      if (user && user.id) {
+        userId = user.id;
         socket.emit('authenticate', userId);
       }
     } catch (error) {
@@ -980,78 +1043,4 @@ async function clearAllNotifications() {
     requestNotificationPermission,
     getSocket
   };
-})();
-
-// Expor funções para uso global
-window.api = {
-  // Autenticação
-  register,
-  login,
-  logout,
-  getCurrentUser,
-  updateUserDetails,
-  updatePassword,
-  forgotPassword,
-  resetPassword,
-  
-  // Módulos
-  getModules,
-  getModule,
-  startModule,
-  checkAnswer,
-  getModuleProgress,
-  getModuleStats,
-  getModuleExercises,
-  
-  // Administração de módulos
-  createModule,
-  updateModule,
-  deleteModule,
-  
-  // Progresso
-  getOverallProgress,
-  getDetailedModuleProgress,
-  getProgressStats,
-  completeExercise,
-  updateTopicProgress,
-  
-  // Conquistas
-  getAchievements,
-  getAchievement,
-  getUserAchievements,
-  checkAchievements,
-  
-  // Administração de conquistas
-  createAchievement,
-  updateAchievement,
-  deleteAchievement,
-  awardAchievement,
-  
-  // Comunidade
-  getPosts,
-  getPinnedPosts,
-  getPost,
-  createPost,
-  updatePost,
-  deletePost,
-  addComment,
-  updateComment,
-  deleteComment,
-  likePost,
-  unlikePost,
-  likeComment,
-  unlikeComment,
-  markSolved,
-  
-  // Notificações
-  getUserNotifications,
-  markNotificationAsRead,
-  markAllNotificationsAsRead,
-  deleteNotification,
-  clearAllNotifications,
-  
-  // Administração de usuários
-  getUsers,
-  getLeaderboard,
-  getUserStats
-}; 
+})(); 

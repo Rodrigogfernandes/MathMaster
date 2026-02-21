@@ -20,6 +20,21 @@ class ProfileMenu {
     init() {
         this.createStyles();
         this.setupEventListeners();
+        this.loadUserFromStorage();
+        // Atualiza avatar do header assim que a página carrega
+        var self = this;
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () { self.updateHeaderAvatar(); });
+        } else {
+            this.updateHeaderAvatar();
+        }
+    }
+
+    updateHeaderAvatar() {
+        var headerAvatar = document.querySelector('.avatar');
+        if (headerAvatar && this.userData.name) {
+            headerAvatar.textContent = this.userData.name.charAt(0).toUpperCase();
+        }
     }
 
     // Cria estilos CSS do menu
@@ -545,7 +560,9 @@ class ProfileMenu {
             document.body.appendChild(overlay);
         }
         
+        this.loadUserFromStorage();
         this.updateMenuData();
+        this.fetchUserFromApi();
         this.updateMenuPosition();
         
         // Mostra overlay
@@ -739,25 +756,83 @@ class ProfileMenu {
 
     // Atualiza dados do menu
     updateMenuData() {
-        const profileMenu = document.getElementById('profileMenu');
+        var profileMenu = document.getElementById('profileMenu');
         if (!profileMenu) return;
 
-        // Atualiza valores
-        const coinElements = profileMenu.querySelectorAll('.stat-value, .quick-stat-value');
-        coinElements[0].textContent = this.userData.coins; // stat
-        if (coinElements[2]) coinElements[2].textContent = this.userData.coins; // quick-stat
-        
-        const lessonElements = profileMenu.querySelectorAll('.stat-value');
-        if (lessonElements[1]) lessonElements[1].textContent = this.userData.lessonsCompleted;
-        
-        const achievementElements = profileMenu.querySelectorAll('.stat-value');
-        if (achievementElements[2]) achievementElements[2].textContent = this.userData.achievements;
+        // Atualiza nome, email e avatar
+        var nameEl = profileMenu.querySelector('.profile-details h3');
+        var emailEl = profileMenu.querySelector('.profile-details p');
+        var levelEl = profileMenu.querySelector('.profile-level');
+        var avatarEl = profileMenu.querySelector('.profile-avatar');
+        if (nameEl) nameEl.textContent = this.userData.name || 'Usuário';
+        if (emailEl) emailEl.textContent = this.userData.email || '';
+        if (levelEl) levelEl.textContent = this.userData.level || 'Iniciante';
+        if (avatarEl) avatarEl.textContent = (this.userData.name || 'U').charAt(0).toUpperCase();
+
+        // Atualiza avatar do header (círculo no topo da página)
+        var headerAvatar = document.querySelector('.avatar');
+        if (headerAvatar) headerAvatar.textContent = (this.userData.name || 'U').charAt(0).toUpperCase();
+
+        // Atualiza estatísticas
+        var quickStats = profileMenu.querySelectorAll('.quick-stat-value');
+        if (quickStats[0]) quickStats[0].textContent = this.userData.coins;
+        if (quickStats[1]) quickStats[1].textContent = this.userData.coins;
+        if (quickStats[2]) quickStats[2].textContent = this.userData.lessonsCompleted;
     }
 
     // Atualiza dados do usuário
     updateUserData(data) {
         this.userData = { ...this.userData, ...data };
         this.updateMenuData();
+    }
+
+    // Carrega dados do usuário do storage (mantém logado ao navegar)
+    loadUserFromStorage() {
+        var name = '';
+        if (typeof AuthStorage !== 'undefined') {
+            name = AuthStorage.getUserName();
+        } else {
+            name = localStorage.getItem('userName') || sessionStorage.getItem('userName') || '';
+        }
+        if (name) this.userData.name = name;
+    }
+
+    // Busca dados do usuário na API e atualiza o menu
+    fetchUserFromApi() {
+        var self = this;
+        var token = typeof AuthStorage !== 'undefined' ? AuthStorage.getToken() : (localStorage.getItem('token') || sessionStorage.getItem('token'));
+        if (!token) return;
+
+        var apiBase = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname === '') 
+            ? 'http://localhost:8080/api' 
+            : (window.location.origin || '') + '/api';
+
+        fetch(apiBase + '/users/me', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+            .then(function (r) {
+                if (r.status === 401) {
+                    if (typeof AuthStorage !== 'undefined') AuthStorage.clearAuth();
+                    else {
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('userName');
+                        localStorage.removeItem('userId');
+                        sessionStorage.removeItem('token');
+                        sessionStorage.removeItem('userName');
+                        sessionStorage.removeItem('userId');
+                    }
+                }
+                return r.ok ? r.json() : null;
+            })
+            .then(function (user) {
+                if (user) {
+                    if (user.name) self.userData.name = user.name;
+                    if (user.email) self.userData.email = user.email;
+                    self.updateMenuData();
+                    self.updateHeaderAvatar();
+                }
+            })
+            .catch(function () {});
     }
 
     // Ações do menu
@@ -815,9 +890,14 @@ class ProfileMenu {
     // Confirma logout
     confirmLogout() {
         this.hideConfirmationModal();
+        if (typeof AuthStorage !== 'undefined') {
+            AuthStorage.clearAuth();
+        } else {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userId');
+        }
         this.showNotification('Saindo da sua conta...', 'info');
-        
-        // Adiciona efeito de loading
         setTimeout(() => {
             this.showNotification('Até logo! Redirecionando...', 'success');
             setTimeout(() => {

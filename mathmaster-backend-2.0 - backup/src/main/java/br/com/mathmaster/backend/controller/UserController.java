@@ -1,16 +1,19 @@
 package br.com.mathmaster.backend.controller;
 
-import br.com.mathmaster.backend.model.User; // Importa a entidade User
-import br.com.mathmaster.backend.service.UserService; // Importa o UserService
-import org.springframework.beans.factory.annotation.Autowired; // Injeção de dependência
-import org.springframework.http.HttpStatus; // Status HTTP
-import org.springframework.http.ResponseEntity; // Respostas HTTP
-import org.springframework.security.core.Authentication; // Informações de autenticação do Spring Security
-import org.springframework.security.core.context.SecurityContextHolder; // Para acessar o contexto de segurança
-import org.springframework.security.core.userdetails.UserDetails; // Detalhes do usuário no Spring Security
-import org.springframework.web.bind.annotation.GetMapping; // Mapeia requisições GET
-import org.springframework.web.bind.annotation.RequestMapping; // Mapeia o caminho base
-import org.springframework.web.bind.annotation.RestController; // Controlador REST
+import br.com.mathmaster.backend.dto.UpdateUserRequest;
+import br.com.mathmaster.backend.model.User;
+import br.com.mathmaster.backend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -57,8 +60,25 @@ public class UserController {
                 return ResponseEntity.ok(user); // Retorna o usuário com status 200 OK.
             }
         }
-        // Se não houver usuário autenticado ou se algo der errado, retorna 404 Not Found.
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    /**
+     * Atualiza os dados do perfil do usuário logado (nome e/ou email).
+     */
+    @PutMapping("/me")
+    public ResponseEntity<?> updateCurrentUser(@RequestBody UpdateUserRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !(authentication.getPrincipal() instanceof UserDetails)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        String email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        try {
+            User updated = userService.updateUser(email, request);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new ErrorMessage(e.getMessage()));
+        }
     }
 
     /**
@@ -73,5 +93,12 @@ public class UserController {
         // No futuro, esta lógica será mais complexa (ordenar por XP, limitar, etc.).
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+
+    /** DTO simples para mensagens de erro na resposta. */
+    public static class ErrorMessage {
+        private final String message;
+        public ErrorMessage(String message) { this.message = message; }
+        public String getMessage() { return message; }
     }
 }

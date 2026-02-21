@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/perfil.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="components/auth-storage.js"></script>
+    <script src="components/auth-guard.js"></script>
 </head>
 
 <body>
@@ -30,12 +32,10 @@
                 <div class="user-stats">
                     <div class="coins">
                         <span>🪙</span>
-                        <span>0</span>
+                        <span id="header-coins">0</span>
                     </div>
                 </div>
-                <div class="avatar" onclick="openProfileMenu()">
-                    <img src="assets/images/avatar.jpg" alt="Avatar">
-                </div>
+                <div class="avatar" onclick="openProfileMenu()" id="header-avatar">U</div>
             </div>
         </div>
     </header>
@@ -44,39 +44,36 @@
         <div class="profile-container">
             <div class="profile-main">
                 <!-- Cabeçalho do Perfil -->
-                <div class="profile-header">
+                <div class="profile-header-card">
                     <div class="profile-cover">
-
-                        <button class="edit-cover-btn" onclick="openUploadModal('cover')">
+                        <button class="edit-cover-btn" onclick="openUploadModal('cover')" title="Editar capa">
                             <i class="fas fa-camera"></i>
                             <span class="edit-cover-text">Editar capa</span>
                         </button>
                     </div>
                     <div class="profile-info">
-                        <div class="profile-avatar-container">
-                            <div class="profile-avatar">
-                                <img src="assets/images/avatar.jpg" alt="Avatar">
-                            </div>
-                            <button class="edit-avatar-btn" onclick="openUploadModal('avatar')">
+                        <div class="perfil-avatar-wrap">
+                            <div class="perfil-avatar" id="profile-avatar">U</div>
+                            <button class="perfil-avatar-edit-btn" onclick="openUploadModal('avatar')" title="Alterar foto">
                                 <i class="fas fa-camera"></i>
                             </button>
                         </div>
                         <div class="profile-details">
-                            <h1>Aluno</h1>
-                            <p>@aluno</p>
-                            <p>Estudante apaixonado por matemática e programação.</p>
+                            <h1 id="profile-name">Carregando...</h1>
+                            <p class="profile-email" id="profile-email"></p>
+                            <p class="profile-bio" id="profile-bio">Estudante apaixonado por matemática.</p>
                             <div class="profile-stats">
                                 <div class="stat">
-                                    <span class="stat-value">150</span>
-                                    <span class="stat-label">Seguidores</span>
+                                    <span class="stat-value" data-stat="coins">0</span>
+                                    <span class="stat-label">🪙 Moedas</span>
                                 </div>
                                 <div class="stat">
-                                    <span class="stat-value">75</span>
-                                    <span class="stat-label">Seguindo</span>
+                                    <span class="stat-value" data-stat="lessons">0</span>
+                                    <span class="stat-label">📚 Lições</span>
                                 </div>
                                 <div class="stat">
-                                    <span class="stat-value">45</span>
-                                    <span class="stat-label">Amigos</span>
+                                    <span class="stat-value" data-stat="achievements">0</span>
+                                    <span class="stat-label">🏆 Conquistas</span>
                                 </div>
                             </div>
                         </div>
@@ -85,135 +82,150 @@
 
                 <!-- Seção de Edição de Perfil -->
                 <div class="profile-edit-section">
-                    <button class="edit-profile-btn">
+                    <button class="edit-profile-btn" id="edit-profile-btn">
                         <i class="fas fa-edit"></i>
                         Editar Perfil
                     </button>
-                    <button class="change-password-btn">
+                    <button class="change-password-btn" id="change-password-btn">
                         <i class="fas fa-key"></i>
                         Alterar Senha
                     </button>
                 </div>
 
-                <form class="edit-profile-form" style="display: none;">
+                <form class="edit-profile-form" id="edit-profile-form" style="display: none;">
+                    <h3><i class="fas fa-user-edit"></i> Editar informações</h3>
                     <div class="form-group">
                         <label for="name">Nome</label>
-                        <input type="text" id="name" name="name" value="João Silva">
+                        <input type="text" id="name" name="name" required placeholder="Seu nome">
                     </div>
                     <div class="form-group">
-                        <label for="username">Nome de Usuário</label>
-                        <input type="text" id="username" name="username" value="@joaosilva">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
                     </div>
                     <div class="form-group">
                         <label for="bio">Biografia</label>
-                        <textarea id="bio" name="bio"
-                            rows="3">Estudante apaixonado por matemática e programação.</textarea>
+                        <textarea id="bio" name="bio" rows="3" placeholder="Conte um pouco sobre você..."></textarea>
                     </div>
                     <div class="form-actions">
-                        <button type="button" class="btn-cancel">Cancelar</button>
+                        <button type="button" class="btn-cancel" id="cancel-edit-btn">Cancelar</button>
                         <button type="submit" class="btn-save">Salvar</button>
                     </div>
                 </form>
 
                 <!-- Seção de Conquistas -->
                 <div class="profile-achievements">
-                    <h2>Conquistas</h2>
-                    <div class="achievements-grid">
-                        <!-- Será preenchido via JavaScript -->
+                    <h2><i class="fas fa-trophy"></i> Conquistas</h2>
+                    <div class="achievements-grid" id="achievements-grid">
+                        <div class="achievements-placeholder">
+                            <i class="fas fa-medal"></i>
+                            <p>Suas conquistas aparecerão aqui.</p>
+                            <a href="conquistas.html" class="link-conquistas">Ver todas as conquistas</a>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Sidebar -->
             <div class="profile-sidebar">
-                <!-- Lista de Amigos -->
                 <div class="sidebar-section">
-                    <h3>Amigos</h3>
-                    <div class="friends-list">
-                        <!-- Será preenchido via JavaScript -->
+                    <h3><i class="fas fa-chart-line"></i> Resumo</h3>
+                    <div class="summary-cards">
+                        <div class="summary-card">
+                            <span class="summary-icon">🎯</span>
+                            <span class="summary-value" id="sidebar-lessons">0</span>
+                            <span class="summary-label">Lições concluídas</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="summary-icon">🔥</span>
+                            <span class="summary-value" id="sidebar-streak">0</span>
+                            <span class="summary-label">Dias seguidos</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Lista de Seguidores -->
                 <div class="sidebar-section">
-                    <h3>Seguidores</h3>
-                    <div class="followers-list">
-                        <!-- Será preenchido via JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Lista de Seguindo -->
-                <div class="sidebar-section">
-                    <h3>Seguindo</h3>
-                    <div class="following-list">
-                        <!-- Será preenchido via JavaScript -->
+                    <h3><i class="fas fa-bolt"></i> Atalhos</h3>
+                    <div class="shortcuts-list">
+                        <a href="dashboard.html" class="shortcut-item">
+                            <i class="fas fa-book"></i>
+                            <span>Continuar estudando</span>
+                        </a>
+                        <a href="conquistas.html" class="shortcut-item">
+                            <i class="fas fa-trophy"></i>
+                            <span>Ver conquistas</span>
+                        </a>
+                        <a href="comunidade.html" class="shortcut-item">
+                            <i class="fas fa-users"></i>
+                            <span>Comunidade</span>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Modais -->
-    <div class="upload-modal">
-        <div class="upload-container">
-            <h2>Alterar Foto</h2>
-            <div class="upload-options">
-                <div class="upload-option">
-                    <label for="avatar-upload">
-                        <i class="fas fa-user"></i>
+    <!-- Modal de Upload -->
+    <div class="modal-overlay" id="upload-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closeUploadModal()">&times;</button>
+            <h2><i class="fas fa-images"></i> Alterar Foto</h2>
+            <div class="upload-options" id="upload-options">
+                <div class="upload-option-wrap" data-type="avatar">
+                    <label class="upload-option" for="avatar-upload">
+                        <i class="fas fa-user-circle"></i>
                         Foto de Perfil
+                        <input type="file" id="avatar-upload" accept="image/*">
                     </label>
-                    <input type="file" id="avatar-upload" accept="image/*">
                 </div>
-                <div class="upload-option">
-                    <label for="cover-upload">
+                <div class="upload-option-wrap" data-type="cover">
+                    <label class="upload-option" for="cover-upload">
                         <i class="fas fa-image"></i>
                         Foto de Capa
+                        <input type="file" id="cover-upload" accept="image/*">
                     </label>
-                    <input type="file" id="cover-upload" accept="image/*">
                 </div>
             </div>
-            <div class="upload-preview">
-                <!-- Será preenchido via JavaScript -->
-            </div>
+            <div class="upload-preview" id="upload-preview"></div>
             <div class="upload-actions">
-                <button class="btn-cancel">Cancelar</button>
-                <button class="btn-save">Salvar</button>
+                <button type="button" class="btn-cancel" onclick="closeUploadModal()">Cancelar</button>
+                <button type="button" class="btn-save" onclick="saveUpload()">Salvar</button>
             </div>
         </div>
     </div>
 
-    <div class="password-modal">
-        <div class="password-container">
-            <h2>Alterar Senha</h2>
-            <form class="password-form">
+    <!-- Modal de Senha -->
+    <div class="modal-overlay" id="password-modal">
+        <div class="modal-box">
+            <button class="modal-close" onclick="closePasswordModal()">&times;</button>
+            <h2><i class="fas fa-lock"></i> Alterar Senha</h2>
+            <form class="password-form" id="password-form">
                 <div class="form-group">
                     <label for="current-password">Senha Atual</label>
-                    <input type="password" id="current-password" required>
+                    <input type="password" id="current-password" required placeholder="Digite sua senha atual">
                 </div>
                 <div class="form-group">
                     <label for="new-password">Nova Senha</label>
-                    <input type="password" id="new-password" required>
+                    <input type="password" id="new-password" required minlength="6" placeholder="Mínimo 6 caracteres">
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">Confirmar Nova Senha</label>
-                    <input type="password" id="confirm-password" required>
+                    <input type="password" id="confirm-password" required placeholder="Repita a nova senha">
                 </div>
-                <div class="password-actions">
-                    <button type="button" class="btn-cancel">Cancelar</button>
-                    <button type="submit" class="btn-save">Salvar</button>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closePasswordModal()">Cancelar</button>
+                    <button type="submit" class="btn-save">Alterar Senha</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Scripts -->
+    <!-- <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()">🌓</div> -->
+
+    <script src="api.js"></script>
     <script src="components/menu.js"></script>
     <script src="components/notifications.js"></script>
     <script src="components/theme.js"></script>
     <script src="js/perfil.js"></script>
-    <script src="/api.js"></script>
-    <script src="/js/api.js"></script>
 </body>
 
 </html>
